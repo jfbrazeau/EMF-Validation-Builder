@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.emftools.validation.builder.fileExtensions" name="File Extensions To Validate" schema="schema/org.emftools.validation.builder.fileExtensions.exsd"/>
+
+   <extension
+         id="emfValidationBuilder"
+         name="EMF Validation Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="org.emftools.validation.builder.EMFValidationBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="emfValidationNature"
+         name="EMF Validation Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.emftools.validation.builder.EMFValidationNature">
+         </run>
+      </runtime>
+      <builder
+            id="org.emftools.validation.builder.emfValidationBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="org.emftools.validation.builder.contribution1">
+         <action
+               label="Add/Remove EMF Validation Nature"
+               class="org.emftools.validation.builder.ToggleNatureAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="org.emftools.validation.builder.addRemoveNatureAction">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.emftools.validation.builder.preferences.EMFValidationBuilderPreferencePage"
+            id="org.emftools.validation.builder.preferences.EMFValidationBuilderPreferencePage"
+            name="EMF Validation Builder">
+      </page>
+   </extension>
+   <!-- extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.emftools.validation.builder.preferences.PreferenceInitializer">
+      </initializer>
+   </extension -->
+
+</plugin>

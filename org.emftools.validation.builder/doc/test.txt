@@ -1,0 +1,17 @@
+TOTEST :
+- tester renommage projet, suppression projet
+- lors de la suppression de la nature du builder, il faut supprimer les marqueurs
+- les erreurs (type NullPointer, etc.) lev�es dans les contraintes doivent �tre g�r�es proprement
+- quand la liste des extensions valid�es change, un full build + clean de tous les projets est ex�cut�
+
+DONE :
+- ajouter �cran de prefs permettant d'ajouter des extensions de fichier � valider
+- sauver les resource descriptors dans fichiers multiples par projet
+- finaliser gestion extension point
+- lorsque les fichiers de persistance des d�pendances n'existent pas et qu'ils sont cr��s pour la premi�re fois, un build complet doit �tre op�r�
+- reference href vers fichier inexistant doit g�n�rer une erreur (notamment lors de la suppression d'un fichier)
+- lors de la suppression d'un fichier qui est en d�pendance d'un autre fichier (referrer), la validation de ce dernier doit �tre ex�cut�e et une erreur doit �tre g�n�r�e (comme au point pr�c�dent)
+- refactorer la gestion des descripteurs de ressources pour : 
+  o organiser par projet
+  o lorsque la nature du builder est supprim�e sur un projet, les ressources sans d�pendances sont supprim�es
+  o lorsqu'une d�pendance est supprim�e, v�rifier si le fichier point� est dans un projet build�, si non la supprimer du repository

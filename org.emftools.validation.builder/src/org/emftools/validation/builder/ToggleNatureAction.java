@@ -39,8 +39,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+/**
+ * The action that allows to toggle the EMF Validation Builder nature on a
+ * project.
+ */
 public class ToggleNatureAction implements IObjectActionDelegate {
 
+	/** The user selection */
 	private ISelection selection;
 
 	/*
@@ -70,8 +75,9 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
+	 * @see
+	 * org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action
+	 * .IAction, org.eclipse.jface.viewers.ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 		this.selection = selection;
@@ -80,17 +86,18 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IWorkbenchPart)
+	 * @see
+	 * org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.
+	 * action.IAction, org.eclipse.ui.IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 
 	/**
-	 * Toggles sample nature on a project
+	 * Toggles EMF Validation Builder nature on a project.
 	 * 
 	 * @param project
-	 *            to have sample nature added or removed
+	 *            to have EMF Validation Builder nature added or removed.
 	 */
 	private void toggleNature(IProject project) {
 		try {
@@ -116,9 +123,12 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 			newNatures[natures.length] = EMFValidationNature.NATURE_ID;
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
-		}
-		catch (CoreException e) {
-			Activator.getDefault().logError("Unexpected error while toggling the EMF Validation builder nature", e);
+		} catch (CoreException e) {
+			Activator
+					.getDefault()
+					.logError(
+							"Unexpected error while toggling the EMF Validation builder nature",
+							e);
 		}
 	}
 

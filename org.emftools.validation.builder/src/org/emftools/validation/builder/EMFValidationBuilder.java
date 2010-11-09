@@ -67,27 +67,50 @@ import org.emftools.validation.builder.resourcedesc.ResourceDescriptor;
 import org.emftools.validation.builder.resourcedesc.ResourceDescriptorRepository;
 import org.xml.sax.SAXParseException;
 
-// TODO Ajouter action clean all
+/**
+ * EMF Validation builder implementation.
+ */
 public class EMFValidationBuilder extends IncrementalProjectBuilder {
 
+	/** Builder identifier constant */
 	public static final String BUILDER_ID = "org.emftools.validation.builder.emfValidationBuilder";
+
+	/**
+	 * Qualified name used to save the last project name that is used to detect
+	 * the project renamings
+	 */
 	private static final QualifiedName LAST_PROJECT_NAME = new QualifiedName(
 			BUILDER_ID, "lastProjectName");
+
+	/** Resource descriptor repository used to manage the resource dependencies */
 	private ResourceDescriptorRepository repository = ResourceDescriptorRepository
 			.getInstance();
 
-	private EclipseResourcesUtil eclipseResourcesUtil = new EclipseResourcesUtil() {
-		protected boolean adjustMarker(IMarker marker, Diagnostic diagnostic)
-				throws CoreException {
-			boolean result = super.adjustMarker(marker, diagnostic);
-			return result;
-		};
-	};
+	/**
+	 * Eclipse resource utility used to create the problem markers.
+	 */
+	private EclipseResourcesUtil eclipseResourcesUtil = new EclipseResourcesUtil();
 
+	/**
+	 * Delta visitor used for incremental builds.
+	 */
 	class DeltaVisitor implements IResourceDeltaVisitor {
+
+		/** Progress monitor */
 		private IProgressMonitor monitor;
+
+		/**
+		 * Resource cache used to re-validate not a resource that has already
+		 * been validated (very useful for bi-directional dependencies)
+		 */
 		private List<IResource> validationCache = new ArrayList<IResource>();
 
+		/**
+		 * Default constructor.
+		 * 
+		 * @param monitor
+		 *            progress monitor.
+		 */
 		public DeltaVisitor(IProgressMonitor monitor) {
 			this.monitor = monitor;
 		}
@@ -105,7 +128,8 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 			case IResourceDelta.ADDED:
 			case IResourceDelta.CHANGED:
 				// handle added/changed resource
-				runValidation(validationCache, resource, monitor);
+				performResourceAndReferersValidation(validationCache, resource,
+						monitor);
 				break;
 			case IResourceDelta.REMOVED:
 				// handle removed resource
@@ -122,8 +146,8 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 
 					// Referrers validation (if those referrers still reference
 					// the deleted resource descriptor, it we be readded
-					runAutomaticValidation(validationCache, referrersClone,
-							monitor);
+					performResourcesListAndReferersValidation(validationCache,
+							referrersClone, monitor);
 				}
 				break;
 			}
@@ -132,23 +156,61 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
+	/**
+	 * Resource visitor used for full builds.
+	 */
 	class ResourceVisitor implements IResourceVisitor {
+
+		/** Progress monitor */
 		private IProgressMonitor monitor;
+
+		/**
+		 * Resource cache used to re-validate not a resource that has already
+		 * been validated (very useful for bi-directional dependencies)
+		 */
 		private List<IResource> validationCache = new ArrayList<IResource>();
 
+		/**
+		 * Default constructor.
+		 * 
+		 * @param monitor
+		 *            progress monitor.
+		 */
 		public ResourceVisitor(IProgressMonitor monitor) {
 			this.monitor = monitor;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core
+		 * .resources.IResource)
+		 */
 		public boolean visit(IResource resource) throws CoreException {
-			runValidation(validationCache, resource, monitor);
+			performResourceAndReferersValidation(validationCache, resource,
+					monitor);
 			// return true to continue visiting children.
 			return true;
 		}
 	}
 
-	private void runValidation(List<IResource> validationCache,
-			IResource resource, IProgressMonitor monitor) throws CoreException {
+	/**
+	 * Performs a validation on a resource and the resources that depends on it.
+	 * 
+	 * @param validationCache
+	 *            the resource cache used to re-validate not a resource that has
+	 *            already been validated.
+	 * @param resource
+	 *            the resource to validate.
+	 * @param monitor
+	 *            the progress monitor.
+	 * @throws CoreException
+	 *             thrown if an unexpected error occurs.
+	 */
+	private void performResourceAndReferersValidation(
+			List<IResource> validationCache, IResource resource,
+			IProgressMonitor monitor) throws CoreException {
 		if (!validationCache.contains(resource)
 				&& resource instanceof IFile
 				&& Activator.getDefault().getFileExtensionsToProcess()
@@ -166,7 +228,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 				// File loading
 				ResourceSet rs = new ResourceSetImpl();
 				Resource emfResource = rs.getResource(uri, true);
-				processNormalValidation(validationCache, resource, emfResource,
+				performEMFResourceValidation(validationCache, emfResource,
 						monitor);
 			} catch (WrappedException e) {
 				Activator.getDefault().logError(
@@ -191,26 +253,36 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 					.getResourceDescriptor(
 							ResourceDescriptorRepository.getUri(resource))
 					.getReferrerResources();
-			runAutomaticValidation(validationCache, referrers, monitor);
+			performResourcesListAndReferersValidation(validationCache,
+					referrers, monitor);
 		}
 	}
 
-	private void processNormalValidation(List<IResource> validationCache,
-			IResource resource, final Resource emfResource,
-			IProgressMonitor monitor) throws CoreException {
+	/**
+	 * Performs a validation on the EMF resource.
+	 * 
+	 * @param validationCache
+	 *            the resource cache used to re-validate not a resource that has
+	 *            already been validated.
+	 * @param emfResource
+	 *            the EMF resource to validate.
+	 * @param monitor
+	 *            the progress monitor.
+	 * @throws CoreException
+	 *             thrown if an unexpected error occurs.
+	 */
+	private void performEMFResourceValidation(List<IResource> validationCache,
+			final Resource emfResource, IProgressMonitor monitor)
+			throws CoreException {
 		ResourceSet rs = emfResource.getResourceSet();
 		EList<EObject> emfContent = emfResource.getContents();
-		// TODO ajouter comptage des �l�ments contenus dans le fichier pour
-		// impl�menter le progressmonitor
+		// The default Diagnostician is overrided in order to disallow him from
+		// validating the eObjects that are not contained in the current EMF
+		// resource (except if that resource is not an eclipse resource)
 		Diagnostician diagnostician = new Diagnostician() {
 			@Override
 			public boolean validate(EClass eClass, EObject eObject,
 					DiagnosticChain diagnostics, Map<Object, Object> context) {
-				// TODO traduire
-				// On ne valide que les �l�ments contenus dans le fichier en
-				// cours de construction, pas les �l�ments externes (ie.
-				// dans d'autres fichiers, sauf si il s'agit de fichiers hors
-				// d'eclipse)
 				Resource currentResource = eObject.eResource();
 				if (emfResource == currentResource
 						|| !currentResource.getURI().isPlatform()) {
@@ -221,6 +293,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 				}
 			}
 		};
+		// Validation ....
 		BasicDiagnostic diagnostic = new BasicDiagnostic(
 				EObjectValidator.DIAGNOSTIC_SOURCE, 0,
 				EMFEditUIPlugin.INSTANCE.getString(
@@ -306,7 +379,22 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 
 	}
 
-	private void runAutomaticValidation(List<IResource> validationCache,
+	/**
+	 * Performs a validation on a resource list and the resources that depends
+	 * on them.
+	 * 
+	 * @param validationCache
+	 *            the resource cache used to re-validate not a resource that has
+	 *            already been validated.
+	 * @param resourcesDescToValidate
+	 *            the resource descriptor of the resources to validate.
+	 * @param monitor
+	 *            the progress monitor.
+	 * @throws CoreException
+	 *             thrown if an unexpected error occurs.
+	 */
+	private void performResourcesListAndReferersValidation(
+			List<IResource> validationCache,
 			EList<ResourceDescriptor> resourcesDescToValidate,
 			IProgressMonitor monitor) throws CoreException {
 		URIConverter uriConverter = repository.getURIConverter();
@@ -315,7 +403,8 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 			IFile referrerFile = ResourceDescriptorRepository.getFile(
 					uriConverter, referrerUri);
 			if (referrerFile.getProject() == getProject()) {
-				runValidation(validationCache, referrerFile, monitor);
+				performResourceAndReferersValidation(validationCache,
+						referrerFile, monitor);
 			} else {
 				referrerFile.touch(monitor);
 			}
@@ -339,13 +428,11 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 		// Normal build process
 		if (kind == FULL_BUILD) {
 			fullBuild(monitor);
-		}
-		else {
+		} else {
 			IResourceDelta delta = getDelta(getProject());
 			if (delta == null) {
 				fullBuild(monitor);
-			}
-			else {
+			} else {
 				incrementalBuild(delta, monitor);
 			}
 		}
@@ -353,8 +440,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 		// Save the resource descriptors if required
 		try {
 			repository.save();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			Activator
 					.getDefault()
 					.logError(
@@ -364,6 +450,14 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 		return null;
 	}
 
+	/**
+	 * This method handles the projects renamings.
+	 * 
+	 * @param monitor
+	 *            the progress monitor.
+	 * @throws CoreException
+	 *             thrown if an unexpected error occurs.
+	 */
 	private void manageProjectNameChanges(IProgressMonitor monitor)
 			throws CoreException {
 		// We check if the current project has been renamed
@@ -398,6 +492,14 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 				currentProjectName);
 	}
 
+	/**
+	 * Performs a full build.
+	 * 
+	 * @param monitor
+	 *            the progress monitor.
+	 * @throws CoreException
+	 *             thrown if an unexpected error occurs.
+	 */
 	protected void fullBuild(final IProgressMonitor monitor)
 			throws CoreException {
 		// Re-initialize the resource descriptors of the project
@@ -414,6 +516,16 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 		getProject().accept(new ResourceVisitor(monitor));
 	}
 
+	/**
+	 * Performs an incremental build.
+	 * 
+	 * @param delta
+	 *            the resource delta.
+	 * @param monitor
+	 *            the progress monitor.
+	 * @throws CoreException
+	 *             thrown if an unexpected error occurs.
+	 */
 	protected void incrementalBuild(IResourceDelta delta,
 			IProgressMonitor monitor) throws CoreException {
 		// the visitor does the work.

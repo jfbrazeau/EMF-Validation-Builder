@@ -38,15 +38,34 @@ import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+/**
+ * Helper class that offers validation utility methods.
+ */
 public class EMFConstraintsHelper {
 
+	/** Helper instances map */
 	private static HashMap<String, EMFConstraintsHelper> instances = new HashMap<String, EMFConstraintsHelper>();
+
+	/** The source */
 	private String source;
 
+	/**
+	 * Default constructor.
+	 * 
+	 * @param source
+	 *            the source.
+	 */
 	private EMFConstraintsHelper(String source) {
 		this.source = source;
 	}
 
+	/**
+	 * Returns the helper instance associated to the source.
+	 * 
+	 * @param source
+	 *            the source.
+	 * @return the helper instance associated to the source.
+	 */
 	public static EMFConstraintsHelper getInstance(String source) {
 		EMFConstraintsHelper instance = instances.get(source);
 		if (instance == null) {
@@ -56,44 +75,95 @@ public class EMFConstraintsHelper {
 		return instance;
 	}
 
+	/**
+	 * Adds an error if the value is empty, which means null or empty string.
+	 * 
+	 * @param value
+	 *            the value to check.
+	 * @param diagnostic
+	 *            the diagnostic.
+	 * @param eObject
+	 *            the eObject on which is applied the check.
+	 * @param code
+	 *            the error code.
+	 * @param message
+	 *            the error message.
+	 * @param msgParameters
+	 *            the message parameters.
+	 * @return a boolean indicating if the entry is valid (if the value is not
+	 *         empty).
+	 */
 	public boolean addErrorIfEmpty(String value, DiagnosticChain diagnostic,
 			EObject eObject, int code, String message, Object... msgParameters) {
-		boolean empty = false;
+		boolean valid = true;
 		if (value == null || value.trim().equals("")) {
 			addError(diagnostic, eObject, code, message, msgParameters);
-			empty = true;
+			valid = false;
 		}
-		return !empty;
+		return valid;
 	}
 
-	
-	
 	/**
 	 * Adds an error if the object is not unique, except if the object
 	 * corresponds to the first occurrence of the duplicated objects.
+	 * 
+	 * @param eObjectsList
+	 *            the eObjects list.
+	 * @param identfyingFeature
+	 *            the feature used to identify the eObjects.
+	 * @param diagnostic
+	 *            the diagnostic.
+	 * @param eObject
+	 *            the eObject on which is applied the check.
+	 * @param code
+	 *            the error code.
+	 * @param message
+	 *            the error message.
+	 * @param msgParameters
+	 *            the message parameters.
+	 * @return a boolean indicating if the entry is valid.
 	 */
 	public boolean addErrorIfNotUnique(List<?> eObjectsList,
 			EStructuralFeature identfyingFeature, DiagnosticChain diagnostic,
 			EObject eObject, int code, String message, Object... msgParameters) {
-		boolean unique = true;
+		boolean valid = true;
 		Object identifier = eObject.eGet(identfyingFeature);
 		Iterator<?> iterator = eObjectsList.iterator();
-		while (iterator.hasNext() && unique) {
+		while (iterator.hasNext() && valid) {
 			EObject currentEObject = (EObject) iterator.next();
 			if (currentEObject == eObject) {
 				break;
-			}
-			else {
-				Object currentIdentifier = currentEObject.eGet(identfyingFeature);
+			} else {
+				Object currentIdentifier = currentEObject
+						.eGet(identfyingFeature);
 				if (equals(identifier, currentIdentifier)) {
-					unique = false;
+					valid = false;
 					addError(diagnostic, eObject, code, message, msgParameters);
 				}
 			}
 		}
-		return !unique;
+		return valid;
 	}
 
+	/**
+	 * Adds an error if the specified objects are equals.
+	 * 
+	 * @param o1
+	 *            the first object to compare.
+	 * @param o2
+	 *            the second object to compare.
+	 * @param diagnostic
+	 *            the diagnostic.
+	 * @param eObject
+	 *            the eObject on which is applied the check.
+	 * @param code
+	 *            the error code.
+	 * @param message
+	 *            the error message.
+	 * @param msgParameters
+	 *            the message parameters.
+	 * @return a boolean indicating if the entry is valid.
+	 */
 	public boolean addErrorIfNotEquals(Object o1, Object o2,
 			DiagnosticChain diagnostic, EObject eObject, int code,
 			String message, Object... msgParameters) {
@@ -104,6 +174,15 @@ public class EMFConstraintsHelper {
 		return !equals;
 	}
 
+	/**
+	 * Compares the specified objects.
+	 * 
+	 * @param o1
+	 *            the first object to compare.
+	 * @param o2
+	 *            the second object to compare.
+	 * @return a boolean indicating if the objects are equals.
+	 */
 	private boolean equals(Object o1, Object o2) {
 		boolean equals = false;
 		if (o1 == null) {
@@ -114,24 +193,71 @@ public class EMFConstraintsHelper {
 		return equals;
 	}
 
+	/**
+	 * Adds an error.
+	 * 
+	 * @param diagnostic
+	 *            the diagnostic.
+	 * @param eObject
+	 *            the eObject on which is applied the check.
+	 * @param code
+	 *            the error code.
+	 * @param message
+	 *            the error message.
+	 * @param msgParameters
+	 *            the message parameters.
+	 * @return a boolean indicating if the entry is valid.
+	 */
 	public void addError(DiagnosticChain diagnostic, EObject eObject, int code,
 			String message, Object... msgParameters) {
 		newDiagnostic(diagnostic, eObject, Diagnostic.ERROR, code, message,
 				msgParameters);
 	}
 
+	/**
+	 * Adds an warning.
+	 * 
+	 * @param diagnostic
+	 *            the diagnostic.
+	 * @param eObject
+	 *            the eObject on which is applied the check.
+	 * @param code
+	 *            the error code.
+	 * @param message
+	 *            the error message.
+	 * @param msgParameters
+	 *            the message parameters.
+	 * @return a boolean indicating if the entry is valid.
+	 */
 	public void addWarning(DiagnosticChain diagnostic, EObject eObject,
 			int code, String message, Object... msgParameters) {
 		newDiagnostic(diagnostic, eObject, Diagnostic.WARNING, code, message,
 				msgParameters);
 	}
 
+	/**
+	 * Creates a diagnostic.
+	 * 
+	 * @param diagnostic
+	 *            the diagnostic.
+	 * @param eObject
+	 *            the eObject on which is applied the check.
+	 * @param severity
+	 *            the severity.
+	 * @param code
+	 *            the error code.
+	 * @param message
+	 *            the error message.
+	 * @param msgParameters
+	 *            the message parameters.
+	 */
 	private void newDiagnostic(DiagnosticChain diagnostic, EObject eObject,
 			int severity, int code, String message, Object... msgParameters) {
 		if (diagnostic != null) {
-			String formattedMessage = MessageFormat.format(message, msgParameters);
-			diagnostic.add(new BasicDiagnostic(severity, source, code, formattedMessage,
-					new Object[] { eObject }));
+			String formattedMessage = MessageFormat.format(message,
+					msgParameters);
+			diagnostic.add(new BasicDiagnostic(severity, source, code,
+					formattedMessage, new Object[] { eObject }));
 		}
 	}
 

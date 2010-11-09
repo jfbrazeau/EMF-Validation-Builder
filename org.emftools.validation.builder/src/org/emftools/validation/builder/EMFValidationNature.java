@@ -73,7 +73,7 @@ public class EMFValidationNature implements IProjectNature {
 		project.setDescription(desc, null);
 
 		// Full build
-		EMFValidationBuilderHelper.scheduleCleanJob(getProject());
+		Activator.getDefault().scheduleCleanJob(getProject());
 	}
 
 	/*

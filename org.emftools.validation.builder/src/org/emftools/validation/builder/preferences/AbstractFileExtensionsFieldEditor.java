@@ -52,12 +52,36 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.emftools.validation.builder.Activator;
 
+/**
+ * Abstract field editor allowing to select several file extensions within a
+ * list.
+ * 
+ * The filed editor shows the default editor icon associated to each file
+ * extension.
+ */
 public abstract class AbstractFileExtensionsFieldEditor extends FieldEditor {
 
+	/** The file extension list to show */
 	private List<String> fileExtensions;
+
+	/** The checkbox table viewer */
 	private CheckboxTableViewer tableViewer;
+
+	/** The resource manager that is used for the icons */
 	private ResourceManager resourceManager;
 
+	/**
+	 * Default constructor.
+	 * 
+	 * @param name
+	 *            the field editor's name.
+	 * @param text
+	 *            the text to show above the table.
+	 * @param fileExtensions
+	 *            the file extension list to show.
+	 * @param parent
+	 *            the parent composite.
+	 */
 	public AbstractFileExtensionsFieldEditor(String name, String text,
 			List<String> fileExtensions, Composite parent) {
 		init(name, text);
@@ -67,10 +91,22 @@ public abstract class AbstractFileExtensionsFieldEditor extends FieldEditor {
 		createControl(parent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.preference.FieldEditor#adjustForNumColumns(int)
+	 */
 	@Override
 	protected void adjustForNumColumns(int numColumns) {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.preference.FieldEditor#doFillIntoGrid(org.eclipse.swt
+	 * .widgets.Composite, int)
+	 */
 	@Override
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
 		Label label = new Label(parent, SWT.NONE);
@@ -110,8 +146,7 @@ public abstract class AbstractFileExtensionsFieldEditor extends FieldEditor {
 						buf.append(descriptor.getLabel());
 						buf.append(")");
 					}
-				}
-				catch (PartInitException e) {
+				} catch (PartInitException e) {
 					// If an error occurs, we only log it
 					// If the editor's icon is not displayable,
 					// it is not so critical
@@ -121,6 +156,7 @@ public abstract class AbstractFileExtensionsFieldEditor extends FieldEditor {
 				}
 				return buf.toString();
 			}
+
 			public Image getImage(Object element) {
 				String fileExtension = (String) element;
 				Image icon = null;
@@ -134,9 +170,11 @@ public abstract class AbstractFileExtensionsFieldEditor extends FieldEditor {
 					// If an error occurs, we only log it
 					// If the editor's icon is not displayable,
 					// it is not so critical
-					Activator.getDefault().logError(
-							"Unexpected error while loading the editor icon",
-							e);
+					Activator
+							.getDefault()
+							.logError(
+									"Unexpected error while loading the editor icon",
+									e);
 				}
 				return icon;
 			}
@@ -163,6 +201,11 @@ public abstract class AbstractFileExtensionsFieldEditor extends FieldEditor {
 		});
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.preference.FieldEditor#doLoad()
+	 */
 	@Override
 	protected void doLoad() {
 		String prefValue = getPreferenceStore().getString(getPreferenceName());
@@ -170,17 +213,29 @@ public abstract class AbstractFileExtensionsFieldEditor extends FieldEditor {
 			doLoadDefault();
 		} else {
 			for (String fileExtension : fileExtensions) {
-				tableViewer.setChecked(fileExtension,
-						prefValue.contains(Activator.PREF_SEPARATOR + fileExtension + Activator.PREF_SEPARATOR));
+				tableViewer.setChecked(
+						fileExtension,
+						prefValue.contains(Activator.PREF_SEPARATOR
+								+ fileExtension + Activator.PREF_SEPARATOR));
 			}
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.preference.FieldEditor#doLoadDefault()
+	 */
 	@Override
 	protected void doLoadDefault() {
 		tableViewer.setAllChecked(getTableItemsDefaultChecked());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.preference.FieldEditor#doStore()
+	 */
 	@Override
 	protected void doStore() {
 		StringWriter buf = new StringWriter();
@@ -194,17 +249,37 @@ public abstract class AbstractFileExtensionsFieldEditor extends FieldEditor {
 		getPreferenceStore().setValue(getPreferenceName(), buf.toString());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.preference.FieldEditor#getNumberOfControls()
+	 */
 	@Override
 	public int getNumberOfControls() {
 		return 2;
 	}
 
+	/**
+	 * @return the table height hint.
+	 */
 	protected abstract int getTableHeightHint();
 
+	/**
+	 * @return a boolean indicating if the table is supposed to grab the
+	 *         vertical space.
+	 */
 	protected abstract boolean getTableGrabsVerticalSpace();
 
+	/**
+	 * @return a boolean indicating if the table item are checked by default.
+	 */
 	protected abstract boolean getTableItemsDefaultChecked();
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.preference.FieldEditor#dispose()
+	 */
 	@Override
 	public void dispose() {
 		resourceManager.dispose();

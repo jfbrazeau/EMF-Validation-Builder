@@ -30,13 +30,20 @@ package org.emftools.validation.builder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.emftools.validation.builder.preferences.EMFValidationBuilderPreferencePage;
@@ -55,19 +62,20 @@ public class Activator extends AbstractUIPlugin {
 	public static final String PREDEFINED_FILE_EXTENSIONS_TO_PROCESS_PREF = "predefinedFileExtensionsToProcess";
 	public static final String CUSTOM_FILE_EXTENSIONS_TO_PROCESS_PREF = "customFileExtensionsToProcess";
 	public static final char PREF_SEPARATOR = '/';
-	
+
 	// The shared instance
 	private static Activator plugin;
-	
+
 	/**
 	 * Model containing extra information used in the build process (static as
 	 * it is shared among the builders)
 	 */
-	private ResourceDescriptorRepository resourceDescriptorsRepository = ResourceDescriptorRepository.getInstance();
+	private ResourceDescriptorRepository resourceDescriptorsRepository = ResourceDescriptorRepository
+			.getInstance();
 
 	/** Predefined file extensions to include in the validation build process */
 	private List<String> predefinedFileExtensionsToProcess = new ArrayList<String>();
-	
+
 	/** File extensions to include in the validation build process */
 	private List<String> fileExtensionsToProcess = new ArrayList<String>();
 
@@ -79,7 +87,10 @@ public class Activator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -91,7 +102,10 @@ public class Activator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
@@ -101,7 +115,7 @@ public class Activator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -109,10 +123,11 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path
+	 * 
+	 * @param path
+	 *            the path
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
@@ -121,6 +136,7 @@ public class Activator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the predefined file extensions to process.
+	 * 
 	 * @return the predefined file extensions to process.
 	 */
 	public List<String> getPredefinedFileExtensionsToProcess() {
@@ -130,31 +146,55 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * Loads the predefined files extensions to process.
 	 * 
-	 * Predefined file extensions are configured in the plugins through 
-	 * the <code>org.emftools.validation.builder.fileExtensions</code>
-	 * extension point.
+	 * Predefined file extensions are configured in the plugins through the
+	 * <code>org.emftools.validation.builder.fileExtensions</code> extension
+	 * point.
 	 */
 	private void loadPredefinedFileExtensions() {
-		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, "fileExtensions").getExtensions();
+		IExtension[] extensions = Platform.getExtensionRegistry()
+				.getExtensionPoint(PLUGIN_ID, "fileExtensions").getExtensions();
 		for (IExtension ext : extensions) {
 			for (IConfigurationElement cfgElem : ext.getConfigurationElements()) {
 				if ("fileExtension".equals(cfgElem.getName())) {
-					registerPredefinedFileExtension(cfgElem.getAttribute("value"));
-				}
-				else if ("fileExtensionsFromEditor".equals(cfgElem.getName())) {
+					registerPredefinedFileExtension(cfgElem
+							.getAttribute("value"));
+				} else if ("fileExtensionsFromEditor".equals(cfgElem.getName())) {
 					String editorId = cfgElem.getAttribute("editorId");
 					if (editorId != null) {
 						editorId = editorId.trim();
 						if (!"".equals(editorId)) {
-							IExtension[] editorExtensions = Platform.getExtensionRegistry().getExtensionPoint("org.eclipse.ui.editors").getExtensions();
+							IExtension[] editorExtensions = Platform
+									.getExtensionRegistry()
+									.getExtensionPoint("org.eclipse.ui.editors")
+									.getExtensions();
 							for (IExtension editorExt : editorExtensions) {
-								for (IConfigurationElement editorCfgElem : editorExt.getConfigurationElements()) {
-									String id = editorCfgElem.getAttribute("id");
+								for (IConfigurationElement editorCfgElem : editorExt
+										.getConfigurationElements()) {
+									String id = editorCfgElem
+											.getAttribute("id");
 									if (editorId.equals(id)) {
-										String fileExtensionsStr = editorCfgElem.getAttribute("extensions");
+										// Direct file extensions
+										String fileExtensionsStr = editorCfgElem
+												.getAttribute("extensions");
 										if (fileExtensionsStr != null) {
-											String[] fileExtensionsStrArray = fileExtensionsStr.split(",");
+											String[] fileExtensionsStrArray = fileExtensionsStr
+													.split(",");
 											for (String fileExtension : fileExtensionsStrArray) {
+												registerPredefinedFileExtension(fileExtension);
+											}
+										}
+										// Content type bindings
+										for (IConfigurationElement contentTypeBindingCfgElem : editorCfgElem
+												.getChildren("contentTypeBinding")) {
+											String contentTypeId = contentTypeBindingCfgElem
+													.getAttribute("contentTypeId");
+											IContentType contentType = Platform
+													.getContentTypeManager()
+													.getContentType(
+															contentTypeId);
+											String[] fileExtensions = contentType
+													.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
+											for (String fileExtension : fileExtensions) {
 												registerPredefinedFileExtension(fileExtension);
 											}
 										}
@@ -169,8 +209,10 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Registers in a file extension in the predefined file extensions list. 
-	 * @param fileExtension the file extension to register.
+	 * Registers in a file extension in the predefined file extensions list.
+	 * 
+	 * @param fileExtension
+	 *            the file extension to register.
 	 */
 	private void registerPredefinedFileExtension(String fileExtension) {
 		if (fileExtension != null) {
@@ -180,30 +222,37 @@ public class Activator extends AbstractUIPlugin {
 			}
 		}
 	}
-	
+
 	/**
 	 * Update the file extensions list to be processed.
 	 * 
 	 * This method is invoked when the preference page is validated.
+	 * 
 	 * @see EMFValidationBuilderPreferencePage#performOk()
 	 */
 	public void updateFileExtensionsToProcess() {
 		debug("updateFileExtensionsToProcess()");
 		fileExtensionsToProcess.clear();
 		// Predefined file extensions
-		String prefValue = getPreferenceStore().getString(PREDEFINED_FILE_EXTENSIONS_TO_PROCESS_PREF);
+		String prefValue = getPreferenceStore().getString(
+				PREDEFINED_FILE_EXTENSIONS_TO_PROCESS_PREF);
 		for (String predefinedFileExtension : predefinedFileExtensionsToProcess) {
-			boolean isEnabled = (prefValue == null) || (prefValue.contains(Activator.PREF_SEPARATOR + predefinedFileExtension + Activator.PREF_SEPARATOR));
+			boolean isEnabled = (prefValue == null)
+					|| (prefValue.contains(Activator.PREF_SEPARATOR
+							+ predefinedFileExtension
+							+ Activator.PREF_SEPARATOR));
 			if (isEnabled) {
 				registerFileExtensionToProcess(predefinedFileExtension);
 			}
 		}
 		// Custom file extensions
-		prefValue = getPreferenceStore().getString(CUSTOM_FILE_EXTENSIONS_TO_PROCESS_PREF);
+		prefValue = getPreferenceStore().getString(
+				CUSTOM_FILE_EXTENSIONS_TO_PROCESS_PREF);
 		if (prefValue != null) {
 			if (prefValue.startsWith(String.valueOf(PREF_SEPARATOR)))
 				prefValue = prefValue.substring(1);
-			String[] customFileExtensions = prefValue.split(String.valueOf(PREF_SEPARATOR));
+			String[] customFileExtensions = prefValue.split(String
+					.valueOf(PREF_SEPARATOR));
 			for (String customFileExtension : customFileExtensions) {
 				registerFileExtensionToProcess(customFileExtension);
 			}
@@ -211,18 +260,22 @@ public class Activator extends AbstractUIPlugin {
 		// Full rebuild
 		SafeRunner.run(new ISafeRunnable() {
 			public void run() throws Exception {
-				EMFValidationBuilderHelper.scheduleCleanJobs();
+				scheduleCleanJobs();
 			}
+
 			public void handleException(Throwable exception) {
-		        Activator.getDefault().logError("Unhandled Exception", exception);
+				Activator.getDefault().logError("Unhandled Exception",
+						exception);
 			}
 		});
 	}
 
 	/**
-	 * Registers in a file extension in the file extensions list that will
-	 * be processed. 
-	 * @param fileExtension the file extension to register.
+	 * Registers in a file extension in the file extensions list that will be
+	 * processed.
+	 * 
+	 * @param fileExtension
+	 *            the file extension to register.
 	 */
 	private void registerFileExtensionToProcess(String fileExtension) {
 		debug("  registerFileExtensionToProcess(" + fileExtension + ")");
@@ -233,9 +286,10 @@ public class Activator extends AbstractUIPlugin {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the file extensions list to be processed.
+	 * 
 	 * @return the file extensions list to be processed.
 	 */
 	public List<String> getFileExtensionsToProcess() {
@@ -244,24 +298,29 @@ public class Activator extends AbstractUIPlugin {
 
 	/**
 	 * Logs an error.
-	 * @param error the error message.
-	 * @param throwable the throwable to log.
+	 * 
+	 * @param error
+	 *            the error message.
+	 * @param throwable
+	 *            the throwable to log.
 	 */
 	public void logError(String error, Throwable throwable) {
 		if (error == null && throwable != null) {
 			error = throwable.getMessage();
 		}
 		getLog().log(
-				new Status(IStatus.ERROR,
-						PLUGIN_ID, IStatus.OK,
-						error, throwable));
+				new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, error,
+						throwable));
 		debug(error, throwable);
 	}
 
 	/**
 	 * Logs an error.
-	 * @param message the message.
-	 * @param throwable the throwable to log.
+	 * 
+	 * @param message
+	 *            the message.
+	 * @param throwable
+	 *            the throwable to log.
 	 */
 	private void debug(String message, Throwable throwable) {
 		if (!isDebugging()) {
@@ -277,10 +336,58 @@ public class Activator extends AbstractUIPlugin {
 
 	/**
 	 * Logs a debug message.
-	 * @param message the message.
+	 * 
+	 * @param message
+	 *            the message.
 	 */
 	private void debug(String message) {
 		debug(message, null);
+	}
+
+	/**
+	 * Schedules a clean job for each project that has the EMF Validation
+	 * Builder nature.
+	 * 
+	 * @throws CoreException
+	 *             thrown if an unexpected error occurs.
+	 */
+	protected void scheduleCleanJobs() throws CoreException {
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects();
+		for (IProject iProject : projects) {
+			if (iProject.isAccessible()
+					&& iProject.hasNature(EMFValidationNature.NATURE_ID)
+					&& iProject.isOpen()) {
+				scheduleCleanJob(iProject);
+			}
+		}
+	}
+
+	/**
+	 * Schedules a clean job for the specified project.
+	 * 
+	 * @param project
+	 *            the project to clean.
+	 */
+	protected void scheduleCleanJob(final IProject project) {
+		// Clean + full rebuild
+		WorkspaceJob cleanJob = new WorkspaceJob("Full build of project '"
+				+ project.getName() + "'") {
+			public boolean belongsTo(Object family) {
+				return ResourcesPlugin.FAMILY_MANUAL_BUILD.equals(family);
+			}
+
+			public IStatus runInWorkspace(IProgressMonitor monitor)
+					throws CoreException {
+				project.build(IncrementalProjectBuilder.CLEAN_BUILD,
+						EMFValidationBuilder.BUILDER_ID, null, monitor);
+				return Status.OK_STATUS;
+			}
+		};
+		cleanJob.setRule(ResourcesPlugin.getWorkspace().getRuleFactory()
+				.buildRule());
+		cleanJob.setUser(false);
+		cleanJob.schedule();
 	}
 
 }

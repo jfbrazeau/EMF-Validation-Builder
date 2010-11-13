@@ -77,7 +77,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Qualified name used to save the last project name that is used to detect
-	 * the project renamings
+	 * the project renames
 	 */
 	private static final QualifiedName LAST_PROJECT_NAME = new QualifiedName(
 			BUILDER_ID, "lastProjectName");
@@ -398,7 +398,13 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 			EList<ResourceDescriptor> resourcesDescToValidate,
 			IProgressMonitor monitor) throws CoreException {
 		URIConverter uriConverter = repository.getURIConverter();
-		for (ResourceDescriptor resourceDescToValidate : resourcesDescToValidate) {
+		// Clone to avoid concurrent modification (when an EMF resource
+		// is uncontrolled, the parent resource dependencies are updated
+		// which causes a concurrent modification on the iterator
+		// if we don't use a cloned list)
+		List<ResourceDescriptor> resourcesDescToValidateClone = new ArrayList<ResourceDescriptor>();
+		resourcesDescToValidateClone.addAll(resourcesDescToValidate);
+		for (ResourceDescriptor resourceDescToValidate : resourcesDescToValidateClone) {
 			URI referrerUri = URI.createURI(resourceDescToValidate.getUri());
 			IFile referrerFile = ResourceDescriptorRepository.getFile(
 					uriConverter, referrerUri);

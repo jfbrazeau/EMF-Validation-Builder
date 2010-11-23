@@ -3,7 +3,12 @@
       id="org.emftools.validation"
       label="EMF Validation Builder"
       version="1.0.0.qualifier"
-      provider-name="Jean-Francois Brazeau">
+      provider-name="Jean-Francois Brazeau"
+      plugin="org.emftools.validation.builder">
+
+   <description url="https://sourceforge.net/projects/emfvalidation/">
+      An eclipse builder that automates the validation process for EMF resources (“on save” validation)
+   </description>
 
    <copyright>
       Copyright (c) 2010, Jean-Francois Brazeau. All rights reserved.
@@ -61,6 +66,11 @@ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
    </license>
+
+   <url>
+      <discovery label="Sourceforge site" url="https://sourceforge.net/projects/emfvalidation/"/>
+      <discovery label="Project documentation" url="http://gmfsamples.tuxfamily.org/wiki/doku.php?id=emf_tools:emfvalidationbuilder:start"/>
+   </url>
 
    <plugin
          id="org.emftools.validation.builder"

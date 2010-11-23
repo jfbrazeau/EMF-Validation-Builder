@@ -30,14 +30,13 @@ package org.emftools.validation.builder;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.emftools.validation.builder.util.EMFValidationNatureHelper;
 
 /**
  * The action that allows to toggle the EMF Validation Builder nature on a
@@ -66,7 +65,7 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 							.getAdapter(IProject.class);
 				}
 				if (project != null) {
-					toggleNature(project);
+					EMFValidationNatureHelper.toggleNature(project);
 				}
 			}
 		}
@@ -91,45 +90,6 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 	 * action.IAction, org.eclipse.ui.IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-	}
-
-	/**
-	 * Toggles EMF Validation Builder nature on a project.
-	 * 
-	 * @param project
-	 *            to have EMF Validation Builder nature added or removed.
-	 */
-	private void toggleNature(IProject project) {
-		try {
-			IProjectDescription description = project.getDescription();
-			String[] natures = description.getNatureIds();
-
-			for (int i = 0; i < natures.length; ++i) {
-				if (EMFValidationNature.NATURE_ID.equals(natures[i])) {
-					// Remove the nature
-					String[] newNatures = new String[natures.length - 1];
-					System.arraycopy(natures, 0, newNatures, 0, i);
-					System.arraycopy(natures, i + 1, newNatures, i,
-							natures.length - i - 1);
-					description.setNatureIds(newNatures);
-					project.setDescription(description, null);
-					return;
-				}
-			}
-
-			// Add the nature
-			String[] newNatures = new String[natures.length + 1];
-			System.arraycopy(natures, 0, newNatures, 0, natures.length);
-			newNatures[natures.length] = EMFValidationNature.NATURE_ID;
-			description.setNatureIds(newNatures);
-			project.setDescription(description, null);
-		} catch (CoreException e) {
-			Activator
-					.getDefault()
-					.logError(
-							"Unexpected error while toggling the EMF Validation builder nature",
-							e);
-		}
 	}
 
 }

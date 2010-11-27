@@ -69,8 +69,9 @@ POSSIBILITY OF SUCH DAMAGE.
    </license>
 
    <url>
+      <update label="EMF Tools Update Site" url="http://emftools.tuxfamily.org/update/"/>
       <discovery label="Sourceforge site" url="https://sourceforge.net/projects/emfvalidation/"/>
-      <discovery label="Project documentation" url="http://gmfsamples.tuxfamily.org/wiki/doku.php?id=emf_tools:emfvalidationbuilder:start"/>
+      <discovery label="EMF Tools Project documentation" url="http://emftools.tuxfamily.org"/>
    </url>
 
    <requires>

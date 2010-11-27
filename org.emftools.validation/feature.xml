@@ -3,7 +3,7 @@
       id="org.emftools.validation"
       label="EMF Validation Builder"
       version="1.0.0.qualifier"
-      provider-name="Jean-Francois Brazeau"
+      provider-name="EMF Tools Project"
       plugin="org.emftools.validation.builder">
 
    <description url="https://sourceforge.net/projects/emfvalidation/">

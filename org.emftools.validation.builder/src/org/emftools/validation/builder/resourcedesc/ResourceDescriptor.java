@@ -27,6 +27,7 @@
  */
 package org.emftools.validation.builder.resourcedesc;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
@@ -156,4 +157,10 @@ public interface ResourceDescriptor extends EObject {
 	 */
 	boolean hasReferrers();
 
+	/**
+	 * @return the workspace file associated to the descriptor.
+	 */
+	IFile getFile();
+	
+	
 } // ResourceDescriptor

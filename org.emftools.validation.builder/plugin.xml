@@ -51,6 +51,17 @@
             name="EMF Validation Builder">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.ui"
+            class="org.emftools.validation.builder.views.ResourceDescRepositoryView"
+            icon="icons/emfvb-icon-16.png"
+            id="org.emftools.validation.builder.views.ResourceDescRespoitoryView"
+            name="EMF Validation Builder Resources Repository"
+            restorable="true">
+      </view>
+   </extension>
    <!-- extension
          point="org.eclipse.core.runtime.preferences">
       <initializer

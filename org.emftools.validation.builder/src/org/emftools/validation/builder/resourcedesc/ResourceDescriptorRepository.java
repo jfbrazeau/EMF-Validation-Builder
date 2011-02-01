@@ -40,6 +40,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
@@ -47,25 +48,58 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 
+/**
+ * Resource descriptors repository.
+ * 
+ * @author jbrazeau
+ */
+// TODO Javadoc
 public class ResourceDescriptorRepository extends AdapterImpl {
 
+	/** Workspace descriptor instance */
 	private WorkspaceDescriptor workspace;
-	private Map<String, ProjectDescriptor> projectsMap = new HashMap<String, ProjectDescriptor>();
-	private Map<String, ResourceDescriptor> resourcesMap = new HashMap<String, ResourceDescriptor>();
+
+	/** Project descriptors cache */
+	private Map<String, ProjectDescriptor> projectsMapCache = new HashMap<String, ProjectDescriptor>();
+
+	/** Resource descriptors cache */
+	private Map<String, ResourceDescriptor> resourcesMapCache = new HashMap<String, ResourceDescriptor>();
+
+	/** Workspace descriptor resource files location */
 	private IPath stateLocation;
+
+	/** Boolean indicating if the workspace descriptor must be flushed on disk */
 	private boolean dirty = false;
-	
+
+	/** Singleton instance */
 	private static ResourceDescriptorRepository instance = new ResourceDescriptorRepository();
-	
+
+	/**
+	 * Default constructor.
+	 */
+	private ResourceDescriptorRepository() {
+	}
+
+	/**
+	 * @return the singleton instance.
+	 */
 	public static ResourceDescriptorRepository getInstance() {
 		return instance;
 	}
-	
+
+	/**
+	 * Initializes the repository.
+	 * 
+	 * @param stateLocation
+	 *            the workspace descriptor resource files location to use.
+	 * @throws IOException
+	 *             thrown if an I/O exception occurs while loading the workspace
+	 *             descriptors.
+	 */
 	public void init(IPath stateLocation) throws IOException {
 		this.stateLocation = stateLocation;
 		// Workspace description file load
@@ -74,38 +108,53 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 			// File load
 			ResourceSet resourceSet = new ResourceSetImpl();
 			ResourcedescPackage.eINSTANCE.eClass();
-			Resource workspaceResource = resourceSet.getResource(getWorkspaceFileURI(), true);
-			workspace = (WorkspaceDescriptor) workspaceResource.getContents().get(0);
+			Resource workspaceResource = resourceSet.getResource(
+					getWorkspaceFileURI(), true);
+			workspace = (WorkspaceDescriptor) workspaceResource.getContents()
+					.get(0);
 
 			// Proxy resolution
 			EcoreUtil.resolveAll(workspace);
-			
-			// Resource resourcesMap indexation
+
+			// Resource resourcesMapCache indexation
 			for (ProjectDescriptor project : workspace.getProjects()) {
-				register(project);
+				registerInCache(project);
 				for (ResourceDescriptor resource : project.getResources()) {
-					register(resource);
+					registerInCache(resource);
 				}
 			}
-			
+
 			// Listener registration
 			registerNotificationListener(workspace);
-		}
-		else {
+		} else {
 			clean();
 		}
 	}
-	
+
+	/**
+	 * @return the project descriptors.
+	 */
+	public List<ProjectDescriptor> getProjectDescriptors() {
+		return workspace.getProjects();
+	}
+
+	/**
+	 * Checks if the repository has been initialized.
+	 */
 	private void checkState() {
 		if (stateLocation == null) {
-			throw new IllegalStateException("Resource descriptor repository has not been initialized");
+			throw new IllegalStateException(
+					"Resource descriptor repository has not been initialized");
 		}
 	}
 
-	public URIConverter getURIConverter() {
-		return workspace.eResource().getResourceSet().getURIConverter();
-	}
-
+	/**
+	 * Resets the workspace descriptor.
+	 * 
+	 * @throws IOException
+	 *             thrown if an I/O exception occurs while saving the workspace
+	 *             descriptors.
+	 */
 	public void clean() throws IOException {
 		checkState();
 		// State files deletion
@@ -118,27 +167,62 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		for (File file : filesToDelete) {
 			if (!file.delete()) {
 				throw new IOException("Unable to clean directory '"
-								+ stateLocationDir.getAbsolutePath()
-								+ "' (file deletion failed : '"
-								+ file.getName() + "'");
+						+ stateLocationDir.getAbsolutePath()
+						+ "' (file deletion failed : '" + file.getName() + "'");
 			}
 		}
-		
-		// Notification listener deletion
-		if (workspace != null) {
-			unregisterNotificationListener(workspace);
-		}
-		
-		// Workspace file creation
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource workspaceResource = resourceSet.createResource(getWorkspaceFileURI());
-		workspace = ResourcedescFactory.eINSTANCE.createWorkspaceDescriptor();
-		workspaceResource.getContents().add(workspace);
 
-		// Listener registration
-		registerNotificationListener(workspace);
+		// Maps clearing
+		projectsMapCache.clear();
+		resourcesMapCache.clear();
+
+		// Workspace initialization
+		if (workspace != null) {
+			List<ProjectDescriptor> projects = new ArrayList<ProjectDescriptor>();
+			projects.addAll(workspace.getProjects());
+			for (ProjectDescriptor project : projects) {
+				List<ResourceDescriptor> resources = new ArrayList<ResourceDescriptor>();
+				resources.addAll(project.getResources());
+				for (ResourceDescriptor resource : resources) {
+					resource.getReferencedResources().clear();
+					resource.getReferrerResources().clear();
+					resource.eAdapters().clear();
+					project.getResources().remove(resource);
+				}
+				project.eAdapters().clear();
+				workspace.getProjects().remove(project);
+			}
+
+			// Remove all the resources except the workspace resource
+			Resource workspaceResource = workspace.eResource();
+			ResourceSet resourceSet = workspaceResource.getResourceSet();
+			resourceSet.getResources().clear();
+			resourceSet.getResources().add(workspaceResource);
+
+		} else {
+			// Workspace file creation
+			ResourceSet resourceSet = new ResourceSetImpl();
+			Resource workspaceResource = resourceSet
+					.createResource(getWorkspaceFileURI());
+			workspace = ResourcedescFactory.eINSTANCE
+					.createWorkspaceDescriptor();
+			workspaceResource.getContents().add(workspace);
+
+			// Listener registration
+			registerNotificationListener(workspace);
+		}
+
+		// Save
+		save();
 	}
-	
+
+	/**
+	 * Saves the workspace descriptors.
+	 * 
+	 * @throws IOException
+	 *             thrown if an I/O exception occurs while saving the workspace
+	 *             descriptors.
+	 */
 	public void save() throws IOException {
 		checkState();
 		if (dirty) {
@@ -153,25 +237,33 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		}
 	}
 
+	/**
+	 * Resets the descriptors for a given project.
+	 * 
+	 * @param projectName
+	 *            the name of the project to clean.
+	 */
 	public void clean(String projectName) {
 		checkState();
-		ProjectDescriptor project = projectsMap.get(projectName);
+		ProjectDescriptor project = projectsMapCache.get(projectName);
 		if (project != null) {
 			// Resources dependencies removal
 			for (ResourceDescriptor resource : project.getResources()) {
 				resource.getReferencedResources().clear();
-			}		
-			
+			}
+
 			// Only resources with no external referrer left must be removed
 			List<ResourceDescriptor> resourcesToRemove = new ArrayList<ResourceDescriptor>();
 			for (ResourceDescriptor resource : project.getResources()) {
-				// Descriptor is removed only if it has no external referrer left
+				// Descriptor is removed only if it has no external referrer
+				// left
 				EList<ResourceDescriptor> referrers = resource
 						.getReferrerResources();
 				boolean hasExternalReferrer = false;
 				for (int i = 0; i < referrers.size() && !hasExternalReferrer; i++) {
 					ResourceDescriptor referrer = referrers.get(i);
-					hasExternalReferrer |= !referrer.getProject().equals(project);
+					hasExternalReferrer |= !referrer.getProject().equals(
+							project);
 				}
 				if (!hasExternalReferrer) {
 					resourcesToRemove.add(resource);
@@ -190,33 +282,40 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 
 	public ProjectDescriptor getProjectDescriptor(String projectName) {
 		checkState();
-		return projectsMap.get(projectName);
+		return projectsMapCache.get(projectName);
 	}
-	
+
 	public ResourceDescriptor getResourceDescriptor(URI resourceUri) {
 		checkState();
-		return resourcesMap.get(resourceUri.toString());
+		return resourcesMapCache.get(resourceUri.toString());
 	}
-	
+
 	public ResourceDescriptor getOrCreateResourceDescriptor(URI resourceUri) {
 		checkState();
-		String resourcePath = workspace.eResource().getResourceSet().getURIConverter().normalize(resourceUri).toPlatformString(true);
-		IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(resourcePath));
+		String resourcePath = workspace.eResource().getResourceSet()
+				.getURIConverter().normalize(resourceUri)
+				.toPlatformString(true);
+		IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot()
+				.getFile(new Path(resourcePath));
 		String projectName = resourceFile.getProject().getName();
-		ProjectDescriptor project = projectsMap.get(projectName);
+		ProjectDescriptor project = projectsMapCache.get(projectName);
 		if (project == null) {
 			project = ResourcedescFactory.eINSTANCE.createProjectDescriptor();
 			project.setName(projectName);
 
 			// EMF resource path building
-			IPath projectResourcesFilePath = stateLocation.append("resourcesDescriptors-" + projectName + ".xmi");
-			File projectResourcesFile = new File(projectResourcesFilePath.toOSString());
-			URI projectResourcesFileURI = URI.createFileURI(projectResourcesFile.getAbsolutePath());
-			findOrCreateResource(projectResourcesFileURI).getContents().add(project);
-			
+			IPath projectResourcesFilePath = stateLocation
+					.append("resourcesDescriptors-" + projectName + ".xmi");
+			File projectResourcesFile = new File(
+					projectResourcesFilePath.toOSString());
+			URI projectResourcesFileURI = URI
+					.createFileURI(projectResourcesFile.getAbsolutePath());
+			findOrCreateResource(projectResourcesFileURI).getContents().add(
+					project);
+
 			// Resource descriptor model update
 			workspace.getProjects().add(project);
-			register(project);
+			registerInCache(project);
 			registerNotificationListener(project);
 		}
 		String resourceUriStr = resourceUri.toString();
@@ -225,7 +324,7 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 			resource = ResourcedescFactory.eINSTANCE.createResourceDescriptor();
 			resource.setUri(resourceUriStr);
 			project.getResources().add(resource);
-			register(resource);
+			registerInCache(resource);
 			registerNotificationListener(resource);
 		}
 		return resource;
@@ -238,12 +337,12 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		resource.getReferrerResources().clear();
 		ProjectDescriptor project = resource.getProject();
 		project.getResources().remove(resource);
-		unregister(resource);
+		unregisterFromCache(resource);
 		unregisterNotificationListener(resource);
 		// Project deletion
 		if (project.getResources().size() == 0) {
 			workspace.getProjects().remove(project);
-			unregister(project);
+			unregisterFromCache(project);
 			unregisterNotificationListener(project);
 			project.eResource().getContents().remove(project);
 		}
@@ -254,50 +353,87 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 			eObject.eAdapters().add(this);
 		}
 	}
-	
+
+	public void registerWorkspaceListener(Adapter adapter) {
+		if (workspace != null) {
+			if (!workspace.eAdapters().contains(adapter)) {
+				workspace.eAdapters().add(adapter);
+				for (ProjectDescriptor project : workspace.getProjects()) {
+					project.eAdapters().add(adapter);
+					for (ResourceDescriptor resource : project.getResources()) {
+						resource.eAdapters().add(adapter);
+					}
+				}
+			}
+		}
+	}
+
+	public void unregisterWorkspaceListener(Adapter adapter) {
+		if (workspace != null) {
+			if (!workspace.eAdapters().contains(adapter)) {
+				workspace.eAdapters().remove(adapter);
+				for (ProjectDescriptor project : workspace.getProjects()) {
+					project.eAdapters().remove(adapter);
+					for (ResourceDescriptor resource : project.getResources()) {
+						resource.eAdapters().remove(adapter);
+					}
+				}
+			}
+		}
+	}
+
 	private void unregisterNotificationListener(EObject eObject) {
 		eObject.eAdapters().remove(this);
 	}
-	
-	private void register(ProjectDescriptor project) {
+
+	private void registerInCache(ProjectDescriptor project) {
 		String name = project.getName();
-		if (projectsMap.get(name) != null) {
-			throw new IllegalArgumentException("Duplicate project descriptor '" + name + "'");
+		if (projectsMapCache.get(name) != null) {
+			throw new IllegalArgumentException("Duplicate project descriptor '"
+					+ name + "'");
 		}
-		projectsMap.put(name, project);
+		projectsMapCache.put(name, project);
 	}
 
-	private void unregister(ProjectDescriptor project) {
-		projectsMap.remove(project.getName());
+	private void unregisterFromCache(ProjectDescriptor project) {
+		projectsMapCache.remove(project.getName());
 	}
 
-	private void register(ResourceDescriptor resource) {
+	private void registerInCache(ResourceDescriptor resource) {
 		String resourceUri = resource.getUri();
-		if (resourcesMap.get(resourceUri) != null) {
-			throw new IllegalArgumentException("Duplicate resource descriptor '" + resource.getUri() + "'");
+		if (resourcesMapCache.get(resourceUri) != null) {
+			throw new IllegalArgumentException(
+					"Duplicate resource descriptor '" + resource.getUri() + "'");
 		}
-		resourcesMap.put(resourceUri, resource);
+		resourcesMapCache.put(resourceUri, resource);
 	}
 
-	private void unregister(ResourceDescriptor resource) {
-		resourcesMap.remove(resource.getUri());
+	private void unregisterFromCache(ResourceDescriptor resource) {
+		resourcesMapCache.remove(resource.getUri());
 	}
 
+	/**
+	 * @return the workspace file.
+	 */
 	private File getWorkspaceFile() {
 		IPath workspaceFilePath = stateLocation.append("workspace.xmi");
 		return new File(workspaceFilePath.toOSString());
 	}
-	
+
+	/**
+	 * @return the workspace file URI.
+	 */
 	private URI getWorkspaceFileURI() {
 		return URI.createFileURI(getWorkspaceFile().getAbsolutePath());
 	}
 
+	// TODO méthode de gestion des resources EMF => à déplacer dans un helper ?
 	private Resource findOrCreateResource(URI uri) {
 		// If this resource already exists, we reuse it
 		ResourceSet rs = workspace.eResource().getResourceSet();
 		Resource resource = null;
 		EList<Resource> resources = rs.getResources();
-		for (int i = 0; (i < resources.size()) && (resource==null); i++) {
+		for (int i = 0; (i < resources.size()) && (resource == null); i++) {
 			Resource currentResource = resources.get(i);
 			if (uri.equals(currentResource.getURI())) {
 				resource = currentResource;
@@ -309,24 +445,11 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		}
 		return resource;
 	}
-	
-	public static IFile getFile(ResourceDescriptor resDesc) {
-		return getFile(resDesc.eResource().getResourceSet().getURIConverter(),
-				URI.createURI(resDesc.getUri(), true));
-	}
 
+	// TODO move this method to ResourceDescriptor interface and implementation
 	public static URI getUri(IResource resource) {
 		return URI.createPlatformResourceURI(resource.getFullPath().toString(),
 				true);
 	}
 
-	public static IFile getFile(URIConverter uriConverter, URI uri) {
-		String path = uriConverter.normalize(uri).toPlatformString(true);
-		return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
-	}
-
 }
-
-
-
-

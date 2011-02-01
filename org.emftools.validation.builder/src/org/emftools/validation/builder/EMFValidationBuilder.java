@@ -56,7 +56,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EObjectValidator;
@@ -249,12 +248,15 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 
 			// And then we validate the resources that uses the current resource
 			// (the referrers).
-			EList<ResourceDescriptor> referrers = repository
-					.getResourceDescriptor(
-							ResourceDescriptorRepository.getUri(resource))
-					.getReferrerResources();
-			performResourcesListAndReferersValidation(validationCache,
-					referrers, monitor);
+			ResourceDescriptor resDesc = repository
+					.getResourceDescriptor(ResourceDescriptorRepository
+							.getUri(resource));
+			if (resDesc != null) {
+				EList<ResourceDescriptor> referrers = resDesc
+						.getReferrerResources();
+				performResourcesListAndReferersValidation(validationCache,
+						referrers, monitor);
+			}
 		}
 	}
 
@@ -360,10 +362,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 			// - or maybe it belongs to a project which has not the EMF
 			// validation builder nature
 			if (referencedResource.getReferrerResources().size() == 0) {
-				IFile referencedResourceFile = ResourceDescriptorRepository
-						.getFile(referencedResource.eResource()
-								.getResourceSet().getURIConverter(),
-								URI.createURI(referencedResource.getUri()));
+				IFile referencedResourceFile = referencedResource.getFile();
 				if (!referencedResourceFile.exists()
 						|| !referencedResourceFile.getProject().hasNature(
 								EMFValidationNature.NATURE_ID)) {
@@ -397,7 +396,6 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 			List<IResource> validationCache,
 			EList<ResourceDescriptor> resourcesDescToValidate,
 			IProgressMonitor monitor) throws CoreException {
-		URIConverter uriConverter = repository.getURIConverter();
 		// Clone to avoid concurrent modification (when an EMF resource
 		// is uncontrolled, the parent resource dependencies are updated
 		// which causes a concurrent modification on the iterator
@@ -405,9 +403,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 		List<ResourceDescriptor> resourcesDescToValidateClone = new ArrayList<ResourceDescriptor>();
 		resourcesDescToValidateClone.addAll(resourcesDescToValidate);
 		for (ResourceDescriptor resourceDescToValidate : resourcesDescToValidateClone) {
-			URI referrerUri = URI.createURI(resourceDescToValidate.getUri());
-			IFile referrerFile = ResourceDescriptorRepository.getFile(
-					uriConverter, referrerUri);
+			IFile referrerFile = resourceDescToValidate.getFile();
 			if (referrerFile.getProject() == getProject()) {
 				performResourceAndReferersValidation(validationCache,
 						referrerFile, monitor);
@@ -453,6 +449,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 							"Unexpected erreor while saving the EMF Validation Builder state",
 							e);
 		}
+		monitor.done();
 		return null;
 	}
 
@@ -485,8 +482,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 						for (ResourceDescriptor referrer : resource
 								.getReferrerResources()) {
 							if (!referrer.getProject().equals(projectDesc)) {
-								ResourceDescriptorRepository.getFile(referrer)
-										.touch(monitor);
+								referrer.getFile().touch(monitor);
 							}
 						}
 					}

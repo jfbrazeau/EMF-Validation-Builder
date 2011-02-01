@@ -351,7 +351,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @throws CoreException
 	 *             thrown if an unexpected error occurs.
 	 */
-	protected void scheduleCleanJobs() throws CoreException {
+	public void scheduleCleanJobs() throws CoreException {
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
 		for (IProject iProject : projects) {

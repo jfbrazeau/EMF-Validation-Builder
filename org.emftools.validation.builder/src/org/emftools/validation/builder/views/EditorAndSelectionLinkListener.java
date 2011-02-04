@@ -100,7 +100,7 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 		try {
 			// TODO Splitter la méthode
 			ProjectDescriptor project = ResourceDescriptorRepository
-					.getInstance().getProjectDescriptor(
+					.getInstance().getCachedProjectDescriptor(
 							file.getProject().getName());
 			if (project != null) {
 				for (ResourceDescriptor resource : project.getResources()) {

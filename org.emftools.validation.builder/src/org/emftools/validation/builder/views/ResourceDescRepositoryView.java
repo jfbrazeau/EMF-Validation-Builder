@@ -56,8 +56,6 @@ import org.emftools.validation.builder.resourcedesc.ResourceDescriptorRepository
  * 
  * @author jbrazeau
  */
-// TODO passage de fichier référencé vers fichier réel sur menu contextuel
-// TODO bouton lier avec l'éditeur
 public class ResourceDescRepositoryView extends ViewPart {
 
 	/**

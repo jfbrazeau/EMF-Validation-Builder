@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -57,7 +56,6 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
  * 
  * @author jbrazeau
  */
-// TODO Javadoc
 public class ResourceDescriptorRepository extends AdapterImpl {
 
 	/** Workspace descriptor instance */
@@ -276,20 +274,25 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.emf.common.notify.impl.AdapterImpl#notifyChanged(org.eclipse
+	 * .emf.common.notify.Notification)
+	 */
 	public void notifyChanged(Notification notification) {
 		dirty = true;
 	}
 
-	public ProjectDescriptor getProjectDescriptor(String projectName) {
-		checkState();
-		return projectsMapCache.get(projectName);
-	}
-
-	public ResourceDescriptor getResourceDescriptor(URI resourceUri) {
-		checkState();
-		return resourcesMapCache.get(resourceUri.toString());
-	}
-
+	/**
+	 * Returns the existing resource descriptor associated to the specified uri
+	 * or creates it.
+	 * 
+	 * @param resourceUri
+	 *            the resource uri.
+	 * @return the resource descriptor.
+	 */
 	public ResourceDescriptor getOrCreateResourceDescriptor(URI resourceUri) {
 		checkState();
 		String resourcePath = workspace.eResource().getResourceSet()
@@ -319,7 +322,7 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 			registerNotificationListener(project);
 		}
 		String resourceUriStr = resourceUri.toString();
-		ResourceDescriptor resource = getResourceDescriptor(resourceUri);
+		ResourceDescriptor resource = getCachedResourceDescriptor(resourceUri);
 		if (resource == null) {
 			resource = ResourcedescFactory.eINSTANCE.createResourceDescriptor();
 			resource.setUri(resourceUriStr);
@@ -330,6 +333,14 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		return resource;
 	}
 
+	/**
+	 * Removes a resource descriptor form the cache and from the repository.
+	 * 
+	 * This method also unregisters the listeners.
+	 * 
+	 * @param resource
+	 *            the resource to remove.
+	 */
 	public void removeResourceDescriptor(ResourceDescriptor resource) {
 		checkState();
 		// Resource deletion
@@ -348,12 +359,32 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		}
 	}
 
+	/**
+	 * Registers the current repository in the EObjects EAdapters.
+	 * 
+	 * @param eObject
+	 *            the EObject.
+	 */
 	private void registerNotificationListener(EObject eObject) {
 		if (!eObject.eAdapters().contains(this)) {
 			eObject.eAdapters().add(this);
 		}
 	}
 
+	/**
+	 * Unregisters the current repository from the EObjects EAdapters.
+	 * 
+	 * @param eObject
+	 *            the EObject.
+	 */
+	private void unregisterNotificationListener(EObject eObject) {
+		eObject.eAdapters().remove(this);
+	}
+
+	/**
+	 * Registers a new adapter in the workspace.
+	 * @param adapter the adapter to register.
+	 */
 	public void registerWorkspaceListener(Adapter adapter) {
 		if (workspace != null) {
 			if (!workspace.eAdapters().contains(adapter)) {
@@ -368,6 +399,10 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		}
 	}
 
+	/**
+	 * Unregisters a new adapter from the workspace.
+	 * @param adapter the adapter to unregister.
+	 */
 	public void unregisterWorkspaceListener(Adapter adapter) {
 		if (workspace != null) {
 			if (!workspace.eAdapters().contains(adapter)) {
@@ -382,10 +417,23 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		}
 	}
 
-	private void unregisterNotificationListener(EObject eObject) {
-		eObject.eAdapters().remove(this);
+	/**
+	 * Returns the project descriptor associated to the specified project name
+	 * in the cache.
+	 * 
+	 * @param projectName
+	 *            the project name.
+	 * @return the project descriptor.
+	 */
+	public ProjectDescriptor getCachedProjectDescriptor(String projectName) {
+		checkState();
+		return projectsMapCache.get(projectName);
 	}
 
+	/**
+	 * Registers a project descriptor in the cache.
+	 * @param project the project descriptor.
+	 */
 	private void registerInCache(ProjectDescriptor project) {
 		String name = project.getName();
 		if (projectsMapCache.get(name) != null) {
@@ -395,10 +443,31 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		projectsMapCache.put(name, project);
 	}
 
+	/**
+	 * Unregisters a project descriptor from the cache.
+	 * @param project the project descriptor.
+	 */
 	private void unregisterFromCache(ProjectDescriptor project) {
 		projectsMapCache.remove(project.getName());
 	}
 
+	/**
+	 * Returns the resource descriptor associated to the specified uri in the
+	 * cache.
+	 * 
+	 * @param resourceUri
+	 *            the resource uri.
+	 * @return the resource descriptor.
+	 */
+	public ResourceDescriptor getCachedResourceDescriptor(URI resourceUri) {
+		checkState();
+		return resourcesMapCache.get(resourceUri.toString());
+	}
+
+	/**
+	 * Registers a resource descriptor in the cache.
+	 * @param resource the resource descriptor.
+	 */
 	private void registerInCache(ResourceDescriptor resource) {
 		String resourceUri = resource.getUri();
 		if (resourcesMapCache.get(resourceUri) != null) {
@@ -408,6 +477,10 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		resourcesMapCache.put(resourceUri, resource);
 	}
 
+	/**
+	 * Unregisters a resource descriptor from the cache.
+	 * @param resource the resource descriptor.
+	 */
 	private void unregisterFromCache(ResourceDescriptor resource) {
 		resourcesMapCache.remove(resource.getUri());
 	}
@@ -427,7 +500,13 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 		return URI.createFileURI(getWorkspaceFile().getAbsolutePath());
 	}
 
-	// TODO méthode de gestion des resources EMF => à déplacer dans un helper ?
+	/**
+	 * Returns the existing resource in the resource set or creates it.
+	 * 
+	 * @param uri
+	 *            the resource uri.
+	 * @return the resource.
+	 */
 	private Resource findOrCreateResource(URI uri) {
 		// If this resource already exists, we reuse it
 		ResourceSet rs = workspace.eResource().getResourceSet();
@@ -444,12 +523,6 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 			resource = rs.createResource(uri);
 		}
 		return resource;
-	}
-
-	// TODO move this method to ResourceDescriptor interface and implementation
-	public static URI getUri(IResource resource) {
-		return URI.createPlatformResourceURI(resource.getFullPath().toString(),
-				true);
 	}
 
 }

@@ -132,9 +132,9 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 				break;
 			case IResourceDelta.REMOVED:
 				// handle removed resource
-				URI uri = ResourceDescriptorRepository.getUri(resource);
+				URI uri = getUri(resource);
 				ResourceDescriptor resDesc = repository
-						.getResourceDescriptor(uri);
+						.getCachedResourceDescriptor(uri);
 				if (resDesc != null) {
 					// Referrers clone build
 					EList<ResourceDescriptor> referrersClone = new BasicEList<ResourceDescriptor>();
@@ -215,7 +215,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 				&& Activator.getDefault().getFileExtensionsToProcess()
 						.contains(resource.getFileExtension())) {
 			IFile file = (IFile) resource;
-			URI uri = ResourceDescriptorRepository.getUri(file);
+			URI uri = getUri(file);
 
 			// Remember that validation has been processed for this resource
 			validationCache.add(file);
@@ -249,8 +249,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 			// And then we validate the resources that uses the current resource
 			// (the referrers).
 			ResourceDescriptor resDesc = repository
-					.getResourceDescriptor(ResourceDescriptorRepository
-							.getUri(resource));
+					.getCachedResourceDescriptor(getUri(resource));
 			if (resDesc != null) {
 				EList<ResourceDescriptor> referrers = resDesc
 						.getReferrerResources();
@@ -475,7 +474,7 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 				repository.clean(savedProjectName);
 				// External referrers need to be rebuilt
 				ProjectDescriptor projectDesc = repository
-						.getProjectDescriptor(savedProjectName);
+						.getCachedProjectDescriptor(savedProjectName);
 				if (projectDesc != null) {
 					for (ResourceDescriptor resource : projectDesc
 							.getResources()) {
@@ -532,6 +531,16 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 			IProgressMonitor monitor) throws CoreException {
 		// the visitor does the work.
 		delta.accept(new DeltaVisitor(monitor));
+	}
+
+	/**
+	 * Returns the resource URI.
+	 * @param resource the resource.
+	 * @return the resource URI.
+	 */
+	public static URI getUri(IResource resource) {
+		return URI.createPlatformResourceURI(resource.getFullPath().toString(),
+				true);
 	}
 
 }

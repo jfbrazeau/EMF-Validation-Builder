@@ -62,11 +62,16 @@
             restorable="true">
       </view>
    </extension>
-   <!-- extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="org.emftools.validation.builder.preferences.PreferenceInitializer">
-      </initializer>
-   </extension -->
-
+   <extension
+         point="org.emftools.validation.builder.fileExtensions">
+      <fileExtensionsFromEditor
+            editorId="org.eclipse.emf.ecore.presentation.EcoreEditorID">
+      </fileExtensionsFromEditor>
+      <fileExtensionsFromEditor
+            editorId="org.eclipse.emf.ecore.presentation.ReflectiveEditorID">
+      </fileExtensionsFromEditor>
+      <fileExtensionsFromEditor
+            editorId="org.eclipse.emf.ecore.presentation.XMLReflectiveEditorID">
+      </fileExtensionsFromEditor>
+   </extension>
 </plugin>

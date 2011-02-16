@@ -39,43 +39,44 @@ import org.emftools.validation.builder.resourcedesc.ResourcedescPackage;
 import org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Package</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
-public class ResourcedescPackageImpl extends EPackageImpl implements ResourcedescPackage {
+public class ResourcedescPackageImpl extends EPackageImpl implements
+		ResourcedescPackage {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass workspaceDescriptorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass resourceDescriptorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass projectDescriptorEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
+	 * package package URI value.
+	 * <p>
+	 * Note: the correct way to create the package is via the static factory
+	 * method {@link #init init()}, which also performs initialization of the
+	 * package, or returns the registered package, if one already exists. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage#eNS_URI
 	 * @see #init()
@@ -86,29 +87,36 @@ public class ResourcedescPackageImpl extends EPackageImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * Creates, registers, and initializes the <b>Package</b> for this model,
+	 * and for any others upon which it depends.
 	 * 
-	 * <p>This method is used to initialize {@link ResourcedescPackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <p>
+	 * This method is used to initialize {@link ResourcedescPackage#eINSTANCE}
+	 * when that field is accessed. Clients should not invoke it directly.
+	 * Instead, they should simply access that field to obtain the package. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
 	public static ResourcedescPackage init() {
-		if (isInited) return (ResourcedescPackage)EPackage.Registry.INSTANCE.getEPackage(ResourcedescPackage.eNS_URI);
+		if (isInited)
+			return (ResourcedescPackage) EPackage.Registry.INSTANCE
+					.getEPackage(ResourcedescPackage.eNS_URI);
 
 		// Obtain or create and register package
-		ResourcedescPackageImpl theResourcedescPackage = (ResourcedescPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ResourcedescPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new ResourcedescPackageImpl());
+		ResourcedescPackageImpl theResourcedescPackage = (ResourcedescPackageImpl) (EPackage.Registry.INSTANCE
+				.get(eNS_URI) instanceof ResourcedescPackageImpl ? EPackage.Registry.INSTANCE
+				.get(eNS_URI) : new ResourcedescPackageImpl());
 
 		isInited = true;
 
@@ -121,15 +129,15 @@ public class ResourcedescPackageImpl extends EPackageImpl implements Resourcedes
 		// Mark meta-data to indicate it can't be changed
 		theResourcedescPackage.freeze();
 
-  
 		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(ResourcedescPackage.eNS_URI, theResourcedescPackage);
+		EPackage.Registry.INSTANCE.put(ResourcedescPackage.eNS_URI,
+				theResourcedescPackage);
 		return theResourcedescPackage;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getWorkspaceDescriptor() {
@@ -137,17 +145,18 @@ public class ResourcedescPackageImpl extends EPackageImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getWorkspaceDescriptor_Projects() {
-		return (EReference)workspaceDescriptorEClass.getEStructuralFeatures().get(0);
+		return (EReference) workspaceDescriptorEClass.getEStructuralFeatures()
+				.get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getResourceDescriptor() {
@@ -155,44 +164,48 @@ public class ResourcedescPackageImpl extends EPackageImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getResourceDescriptor_Uri() {
-		return (EAttribute)resourceDescriptorEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) resourceDescriptorEClass.getEStructuralFeatures()
+				.get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getResourceDescriptor_ReferencedResources() {
-		return (EReference)resourceDescriptorEClass.getEStructuralFeatures().get(1);
+		return (EReference) resourceDescriptorEClass.getEStructuralFeatures()
+				.get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getResourceDescriptor_ReferrerResources() {
-		return (EReference)resourceDescriptorEClass.getEStructuralFeatures().get(2);
+		return (EReference) resourceDescriptorEClass.getEStructuralFeatures()
+				.get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getResourceDescriptor_Project() {
-		return (EReference)resourceDescriptorEClass.getEStructuralFeatures().get(3);
+		return (EReference) resourceDescriptorEClass.getEStructuralFeatures()
+				.get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getProjectDescriptor() {
@@ -200,67 +213,74 @@ public class ResourcedescPackageImpl extends EPackageImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getProjectDescriptor_Resources() {
-		return (EReference)projectDescriptorEClass.getEStructuralFeatures().get(0);
+		return (EReference) projectDescriptorEClass.getEStructuralFeatures()
+				.get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getProjectDescriptor_Workspace() {
-		return (EReference)projectDescriptorEClass.getEStructuralFeatures().get(1);
+		return (EReference) projectDescriptorEClass.getEStructuralFeatures()
+				.get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getProjectDescriptor_Name() {
-		return (EAttribute)projectDescriptorEClass.getEStructuralFeatures().get(2);
+		return (EAttribute) projectDescriptorEClass.getEStructuralFeatures()
+				.get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ResourcedescFactory getResourcedescFactory() {
-		return (ResourcedescFactory)getEFactoryInstance();
+		return (ResourcedescFactory) getEFactoryInstance();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
+	 * Creates the meta-model objects for the package. This method is guarded to
+	 * have no affect on any invocation but its first. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) return;
+		if (isCreated)
+			return;
 		isCreated = true;
 
 		// Create classes and their features
 		workspaceDescriptorEClass = createEClass(WORKSPACE_DESCRIPTOR);
-		createEReference(workspaceDescriptorEClass, WORKSPACE_DESCRIPTOR__PROJECTS);
+		createEReference(workspaceDescriptorEClass,
+				WORKSPACE_DESCRIPTOR__PROJECTS);
 
 		resourceDescriptorEClass = createEClass(RESOURCE_DESCRIPTOR);
 		createEAttribute(resourceDescriptorEClass, RESOURCE_DESCRIPTOR__URI);
-		createEReference(resourceDescriptorEClass, RESOURCE_DESCRIPTOR__REFERENCED_RESOURCES);
-		createEReference(resourceDescriptorEClass, RESOURCE_DESCRIPTOR__REFERRER_RESOURCES);
+		createEReference(resourceDescriptorEClass,
+				RESOURCE_DESCRIPTOR__REFERENCED_RESOURCES);
+		createEReference(resourceDescriptorEClass,
+				RESOURCE_DESCRIPTOR__REFERRER_RESOURCES);
 		createEReference(resourceDescriptorEClass, RESOURCE_DESCRIPTOR__PROJECT);
 
 		projectDescriptorEClass = createEClass(PROJECT_DESCRIPTOR);
@@ -270,21 +290,22 @@ public class ResourcedescPackageImpl extends EPackageImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Complete the initialization of the package and its meta-model. This
+	 * method is guarded to have no affect on any invocation but its first. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) return;
+		if (isInitialized)
+			return;
 		isInitialized = true;
 
 		// Initialize package
@@ -299,26 +320,72 @@ public class ResourcedescPackageImpl extends EPackageImpl implements Resourcedes
 		// Add supertypes to classes
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(workspaceDescriptorEClass, WorkspaceDescriptor.class, "WorkspaceDescriptor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getWorkspaceDescriptor_Projects(), this.getProjectDescriptor(), this.getProjectDescriptor_Workspace(), "projects", null, 0, -1, WorkspaceDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(workspaceDescriptorEClass, WorkspaceDescriptor.class,
+				"WorkspaceDescriptor", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getWorkspaceDescriptor_Projects(),
+				this.getProjectDescriptor(),
+				this.getProjectDescriptor_Workspace(), "projects", null, 0, -1,
+				WorkspaceDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(resourceDescriptorEClass, ResourceDescriptor.class, "ResourceDescriptor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getResourceDescriptor_Uri(), ecorePackage.getEString(), "uri", null, 0, 1, ResourceDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getResourceDescriptor_ReferencedResources(), this.getResourceDescriptor(), this.getResourceDescriptor_ReferrerResources(), "referencedResources", null, 0, -1, ResourceDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getResourceDescriptor_ReferrerResources(), this.getResourceDescriptor(), this.getResourceDescriptor_ReferencedResources(), "referrerResources", null, 0, -1, ResourceDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getResourceDescriptor_Project(), this.getProjectDescriptor(), this.getProjectDescriptor_Resources(), "project", null, 1, 1, ResourceDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(resourceDescriptorEClass, ResourceDescriptor.class,
+				"ResourceDescriptor", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getResourceDescriptor_Uri(), ecorePackage.getEString(),
+				"uri", null, 0, 1, ResourceDescriptor.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEReference(getResourceDescriptor_ReferencedResources(),
+				this.getResourceDescriptor(),
+				this.getResourceDescriptor_ReferrerResources(),
+				"referencedResources", null, 0, -1, ResourceDescriptor.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
+		initEReference(getResourceDescriptor_ReferrerResources(),
+				this.getResourceDescriptor(),
+				this.getResourceDescriptor_ReferencedResources(),
+				"referrerResources", null, 0, -1, ResourceDescriptor.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
+		initEReference(getResourceDescriptor_Project(),
+				this.getProjectDescriptor(),
+				this.getProjectDescriptor_Resources(), "project", null, 1, 1,
+				ResourceDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(resourceDescriptorEClass, ecorePackage.getEBoolean(), "hasReferences", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(resourceDescriptorEClass, ecorePackage.getEBoolean(),
+				"hasReferences", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		addEOperation(resourceDescriptorEClass, ecorePackage.getEBoolean(), "hasReferrers", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(resourceDescriptorEClass, ecorePackage.getEBoolean(),
+				"hasReferrers", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(projectDescriptorEClass, ProjectDescriptor.class, "ProjectDescriptor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getProjectDescriptor_Resources(), this.getResourceDescriptor(), this.getResourceDescriptor_Project(), "resources", null, 0, -1, ProjectDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProjectDescriptor_Workspace(), this.getWorkspaceDescriptor(), this.getWorkspaceDescriptor_Projects(), "workspace", null, 1, 1, ProjectDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProjectDescriptor_Name(), ecorePackage.getEString(), "name", null, 0, 1, ProjectDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(projectDescriptorEClass, ProjectDescriptor.class,
+				"ProjectDescriptor", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getProjectDescriptor_Resources(),
+				this.getResourceDescriptor(),
+				this.getResourceDescriptor_Project(), "resources", null, 0, -1,
+				ProjectDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProjectDescriptor_Workspace(),
+				this.getWorkspaceDescriptor(),
+				this.getWorkspaceDescriptor_Projects(), "workspace", null, 1,
+				1, ProjectDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProjectDescriptor_Name(), ecorePackage.getEString(),
+				"name", null, 0, 1, ProjectDescriptor.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
 	}
 
-} //ResourcedescPackageImpl
+} // ResourcedescPackageImpl

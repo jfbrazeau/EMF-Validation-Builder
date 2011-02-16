@@ -37,26 +37,25 @@ import org.emftools.validation.builder.resourcedesc.ResourcedescPackage;
 import org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Adapter Factory</b> for the model.
- * It provides an adapter <code>createXXX</code> method for each class of the model.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
+ * an adapter <code>createXXX</code> method for each class of the model. <!--
+ * end-user-doc -->
+ * 
  * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage
  * @generated
  */
 public class ResourcedescAdapterFactory extends AdapterFactoryImpl {
 	/**
-	 * The cached model package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected static ResourcedescPackage modelPackage;
 
 	/**
-	 * Creates an instance of the adapter factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ResourcedescAdapterFactory() {
@@ -67,9 +66,10 @@ public class ResourcedescAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> This implementation returns <code>true</code> if
+	 * the object is either the model's package or is an instance object of the
+	 * model. <!-- end-user-doc -->
+	 * 
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
 	 */
@@ -79,57 +79,61 @@ public class ResourcedescAdapterFactory extends AdapterFactoryImpl {
 			return true;
 		}
 		if (object instanceof EObject) {
-			return ((EObject)object).eClass().getEPackage() == modelPackage;
+			return ((EObject) object).eClass().getEPackage() == modelPackage;
 		}
 		return false;
 	}
 
 	/**
-	 * The switch that delegates to the <code>createXXX</code> methods.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The switch that delegates to the <code>createXXX</code> methods. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	protected ResourcedescSwitch<Adapter> modelSwitch =
-		new ResourcedescSwitch<Adapter>() {
-			@Override
-			public Adapter caseWorkspaceDescriptor(WorkspaceDescriptor object) {
-				return createWorkspaceDescriptorAdapter();
-			}
-			@Override
-			public Adapter caseResourceDescriptor(ResourceDescriptor object) {
-				return createResourceDescriptorAdapter();
-			}
-			@Override
-			public Adapter caseProjectDescriptor(ProjectDescriptor object) {
-				return createProjectDescriptorAdapter();
-			}
-			@Override
-			public Adapter defaultCase(EObject object) {
-				return createEObjectAdapter();
-			}
-		};
+	protected ResourcedescSwitch<Adapter> modelSwitch = new ResourcedescSwitch<Adapter>() {
+		@Override
+		public Adapter caseWorkspaceDescriptor(WorkspaceDescriptor object) {
+			return createWorkspaceDescriptorAdapter();
+		}
+
+		@Override
+		public Adapter caseResourceDescriptor(ResourceDescriptor object) {
+			return createResourceDescriptorAdapter();
+		}
+
+		@Override
+		public Adapter caseProjectDescriptor(ProjectDescriptor object) {
+			return createProjectDescriptorAdapter();
+		}
+
+		@Override
+		public Adapter defaultCase(EObject object) {
+			return createEObjectAdapter();
+		}
+	};
 
 	/**
-	 * Creates an adapter for the <code>target</code>.
-	 * <!-- begin-user-doc -->
+	 * Creates an adapter for the <code>target</code>. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param target the object to adapt.
+	 * 
+	 * @param target
+	 *            the object to adapt.
 	 * @return the adapter for the <code>target</code>.
 	 * @generated
 	 */
 	@Override
 	public Adapter createAdapter(Notifier target) {
-		return modelSwitch.doSwitch((EObject)target);
+		return modelSwitch.doSwitch((EObject) target);
 	}
 
-
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor <em>Workspace Descriptor</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor
+	 * <em>Workspace Descriptor</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor
 	 * @generated
@@ -139,11 +143,13 @@ public class ResourcedescAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor <em>Resource Descriptor</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor
+	 * <em>Resource Descriptor</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see org.emftools.validation.builder.resourcedesc.ResourceDescriptor
 	 * @generated
@@ -153,11 +159,13 @@ public class ResourcedescAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emftools.validation.builder.resourcedesc.ProjectDescriptor <em>Project Descriptor</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link org.emftools.validation.builder.resourcedesc.ProjectDescriptor
+	 * <em>Project Descriptor</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see org.emftools.validation.builder.resourcedesc.ProjectDescriptor
 	 * @generated
@@ -167,10 +175,9 @@ public class ResourcedescAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for the default case.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for the default case. <!-- begin-user-doc --> This
+	 * default implementation returns null. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @generated
 	 */
@@ -178,4 +185,4 @@ public class ResourcedescAdapterFactory extends AdapterFactoryImpl {
 		return null;
 	}
 
-} //ResourcedescAdapterFactory
+} // ResourcedescAdapterFactory

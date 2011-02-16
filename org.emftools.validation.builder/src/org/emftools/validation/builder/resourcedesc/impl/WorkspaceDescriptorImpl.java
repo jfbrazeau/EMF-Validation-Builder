@@ -41,23 +41,25 @@ import org.emftools.validation.builder.resourcedesc.ResourcedescPackage;
 import org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Workspace Descriptor</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Workspace Descriptor</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.emftools.validation.builder.resourcedesc.impl.WorkspaceDescriptorImpl#getProjects <em>Projects</em>}</li>
+ * <li>
+ * {@link org.emftools.validation.builder.resourcedesc.impl.WorkspaceDescriptorImpl#getProjects
+ * <em>Projects</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @generated
  */
-public class WorkspaceDescriptorImpl extends EObjectImpl implements WorkspaceDescriptor {
+public class WorkspaceDescriptorImpl extends EObjectImpl implements
+		WorkspaceDescriptor {
 	/**
-	 * The cached value of the '{@link #getProjects() <em>Projects</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getProjects() <em>Projects</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getProjects()
 	 * @generated
 	 * @ordered
@@ -65,8 +67,8 @@ public class WorkspaceDescriptorImpl extends EObjectImpl implements WorkspaceDes
 	protected EList<ProjectDescriptor> projects;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected WorkspaceDescriptorImpl() {
@@ -74,8 +76,8 @@ public class WorkspaceDescriptorImpl extends EObjectImpl implements WorkspaceDes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -84,104 +86,112 @@ public class WorkspaceDescriptorImpl extends EObjectImpl implements WorkspaceDes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<ProjectDescriptor> getProjects() {
 		if (projects == null) {
-			projects = new EObjectContainmentWithInverseEList.Resolving<ProjectDescriptor>(ProjectDescriptor.class, this, ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS, ResourcedescPackage.PROJECT_DESCRIPTOR__WORKSPACE);
+			projects = new EObjectContainmentWithInverseEList.Resolving<ProjectDescriptor>(
+					ProjectDescriptor.class, this,
+					ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS,
+					ResourcedescPackage.PROJECT_DESCRIPTOR__WORKSPACE);
 		}
 		return projects;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseAdd(InternalEObject otherEnd,
+			int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getProjects()).basicAdd(otherEnd, msgs);
+		case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
+			return ((InternalEList<InternalEObject>) (InternalEList<?>) getProjects())
+					.basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd,
+			int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
-				return ((InternalEList<?>)getProjects()).basicRemove(otherEnd, msgs);
+		case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
+			return ((InternalEList<?>) getProjects()).basicRemove(otherEnd,
+					msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
-				return getProjects();
+		case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
+			return getProjects();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
-				getProjects().clear();
-				getProjects().addAll((Collection<? extends ProjectDescriptor>)newValue);
-				return;
+		case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
+			getProjects().clear();
+			getProjects().addAll(
+					(Collection<? extends ProjectDescriptor>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
-				getProjects().clear();
-				return;
+		case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
+			getProjects().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
-				return projects != null && !projects.isEmpty();
+		case ResourcedescPackage.WORKSPACE_DESCRIPTOR__PROJECTS:
+			return projects != null && !projects.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //WorkspaceDescriptorImpl
+} // WorkspaceDescriptorImpl

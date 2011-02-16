@@ -43,22 +43,36 @@ import org.emftools.validation.builder.Activator;
 import org.emftools.validation.builder.resourcedesc.ProjectDescriptor;
 import org.emftools.validation.builder.resourcedesc.ResourceDescriptor;
 
-//TODO Javadoc
+/**
+ * The tree label provider of the validation view.
+ * 
+ * @author jbrazeau
+ */
 final class TreeLabelProvider extends LabelProvider {
 
 	/** The resource manager that is used for the icons */
 	private ResourceManager resourceManager;
 
+	/**
+	 * Default constructor.
+	 * 
+	 * @param resourceManager
+	 *            the resource manager.
+	 */
 	public TreeLabelProvider(ResourceManager resourceManager) {
 		this.resourceManager = resourceManager;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+	 */
 	@Override
 	public String getText(Object element) {
 		String text = null;
 		if (element instanceof ProjectDescriptor) {
 			text = ((ProjectDescriptor) element).getName();
-			// TODO factoriser
 		} else if (element instanceof ResourceDescriptor) {
 			IFile res = ((ResourceDescriptor) element).getFile();
 			text = res.getProjectRelativePath().toPortableString();
@@ -73,12 +87,17 @@ final class TreeLabelProvider extends LabelProvider {
 		return text;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+	 */
 	@Override
 	public Image getImage(Object element) {
 		Image image = null;
 		if (element instanceof ProjectDescriptor) {
-			URL url = Platform.getBundle("org.eclipse.ui.ide")
-					.getResource("icons/full/obj16/prj_obj.gif");
+			URL url = Platform.getBundle("org.eclipse.ui.ide").getResource(
+					"icons/full/obj16/prj_obj.gif");
 			image = resourceManager.createImage(ImageDescriptor
 					.createFromURL(url));
 		} else if (element instanceof ResourceDescriptor) {
@@ -87,18 +106,20 @@ final class TreeLabelProvider extends LabelProvider {
 			image = getResourceIcon(((ResourceReference) element)
 					.getReferenced());
 			URL overlayUrl = Platform.getBundle("org.eclipse.ui.ide")
-					.getResource(
-							"icons/full/ovr16/filterapplied_ovr.gif");
+					.getResource("icons/full/ovr16/filterapplied_ovr.gif");
 			ImageDescriptor overlayDesc = ImageDescriptor
 					.createFromURL(overlayUrl);
-			DecorationOverlayIcon imageDesc = new DecorationOverlayIcon(
-					image, new ImageDescriptor[] { null, null,
-							overlayDesc, null });
+			DecorationOverlayIcon imageDesc = new DecorationOverlayIcon(image,
+					new ImageDescriptor[] { null, null, overlayDesc, null });
 			image = resourceManager.createImage(imageDesc);
 		}
 		return image;
 	}
 
+	/**
+	 * @param resource
+	 * @return
+	 */
 	private Image getResourceIcon(ResourceDescriptor resource) {
 		try {
 			IEditorDescriptor descriptor = IDE.getEditorDescriptor(resource

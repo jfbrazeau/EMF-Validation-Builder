@@ -35,7 +35,12 @@ import org.eclipse.swt.widgets.Display;
 import org.emftools.validation.builder.resourcedesc.ResourceDescriptorRepository;
 import org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor;
 
-//TODO Javadoc
+/**
+ * This class is responsible for listening to the model changes and refreshing
+ * the tree viewer.
+ * 
+ * @author jbrazeau
+ */
 final class ResourceDescriptorsModelAdapter extends AdapterImpl {
 
 	/** The tree viewer to refresh */
@@ -43,14 +48,20 @@ final class ResourceDescriptorsModelAdapter extends AdapterImpl {
 
 	/**
 	 * Default constructor.
-	 * @param viewer the tree viewer to refresh.
+	 * 
+	 * @param viewer
+	 *            the tree viewer to refresh.
 	 */
 	ResourceDescriptorsModelAdapter(TreeViewer viewer) {
 		this.viewer = viewer;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.common.notify.impl.AdapterImpl#notifyChanged(org.eclipse.emf.common.notify.Notification)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.emf.common.notify.impl.AdapterImpl#notifyChanged(org.eclipse
+	 * .emf.common.notify.Notification)
 	 */
 	@Override
 	public void notifyChanged(final Notification msg) {

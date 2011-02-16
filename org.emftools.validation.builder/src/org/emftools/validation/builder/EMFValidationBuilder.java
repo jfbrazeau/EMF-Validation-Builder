@@ -535,7 +535,9 @@ public class EMFValidationBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Returns the resource URI.
-	 * @param resource the resource.
+	 * 
+	 * @param resource
+	 *            the resource.
 	 * @return the resource URI.
 	 */
 	public static URI getUri(IResource resource) {

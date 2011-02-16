@@ -383,7 +383,9 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 
 	/**
 	 * Registers a new adapter in the workspace.
-	 * @param adapter the adapter to register.
+	 * 
+	 * @param adapter
+	 *            the adapter to register.
 	 */
 	public void registerWorkspaceListener(Adapter adapter) {
 		if (workspace != null) {
@@ -401,7 +403,9 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 
 	/**
 	 * Unregisters a new adapter from the workspace.
-	 * @param adapter the adapter to unregister.
+	 * 
+	 * @param adapter
+	 *            the adapter to unregister.
 	 */
 	public void unregisterWorkspaceListener(Adapter adapter) {
 		if (workspace != null) {
@@ -432,7 +436,9 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 
 	/**
 	 * Registers a project descriptor in the cache.
-	 * @param project the project descriptor.
+	 * 
+	 * @param project
+	 *            the project descriptor.
 	 */
 	private void registerInCache(ProjectDescriptor project) {
 		String name = project.getName();
@@ -445,7 +451,9 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 
 	/**
 	 * Unregisters a project descriptor from the cache.
-	 * @param project the project descriptor.
+	 * 
+	 * @param project
+	 *            the project descriptor.
 	 */
 	private void unregisterFromCache(ProjectDescriptor project) {
 		projectsMapCache.remove(project.getName());
@@ -466,7 +474,9 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 
 	/**
 	 * Registers a resource descriptor in the cache.
-	 * @param resource the resource descriptor.
+	 * 
+	 * @param resource
+	 *            the resource descriptor.
 	 */
 	private void registerInCache(ResourceDescriptor resource) {
 		String resourceUri = resource.getUri();
@@ -479,7 +489,9 @@ public class ResourceDescriptorRepository extends AdapterImpl {
 
 	/**
 	 * Unregisters a resource descriptor from the cache.
-	 * @param resource the resource descriptor.
+	 * 
+	 * @param resource
+	 *            the resource descriptor.
 	 */
 	private void unregisterFromCache(ResourceDescriptor resource) {
 		resourcesMapCache.remove(resource.getUri());

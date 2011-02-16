@@ -31,32 +31,36 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Workspace Descriptor</b></em>'.
- * <!-- end-user-doc -->
- *
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Workspace Descriptor</b></em>'. <!-- end-user-doc -->
+ * 
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor#getProjects <em>Projects</em>}</li>
+ * <li>
+ * {@link org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor#getProjects
+ * <em>Projects</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage#getWorkspaceDescriptor()
  * @model
  * @generated
  */
 public interface WorkspaceDescriptor extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Projects</b></em>' containment reference list.
-	 * The list contents are of type {@link org.emftools.validation.builder.resourcedesc.ProjectDescriptor}.
-	 * It is bidirectional and its opposite is '{@link org.emftools.validation.builder.resourcedesc.ProjectDescriptor#getWorkspace <em>Workspace</em>}'.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Projects</b></em>' containment reference
+	 * list. The list contents are of type
+	 * {@link org.emftools.validation.builder.resourcedesc.ProjectDescriptor}.
+	 * It is bidirectional and its opposite is '
+	 * {@link org.emftools.validation.builder.resourcedesc.ProjectDescriptor#getWorkspace
+	 * <em>Workspace</em>}'. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Projects</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Projects</em>' containment reference list
+	 * isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Projects</em>' containment reference list.
 	 * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage#getWorkspaceDescriptor_Projects()
 	 * @see org.emftools.validation.builder.resourcedesc.ProjectDescriptor#getWorkspace

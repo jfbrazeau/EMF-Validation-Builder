@@ -28,6 +28,8 @@
 package org.emftools.validation.builder.views;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
@@ -293,4 +295,43 @@ public class ResourceDescRepositoryView extends ViewPart {
 		super.dispose();
 	}
 
+}
+
+/**
+ * Custom adapter able to convert an IResource to a ResourceDescriptor.
+ * 
+ * @author jbrazeau
+ */
+final class ResourceDescriptorAdapterFactory implements IAdapterFactory {
+
+	/** The adapter only supports IResource instances */
+	private final Class<?>[] supportedTypes = new Class[] { IResource.class };
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
+	 */
+	@Override
+	public Class<?>[] getAdapterList() {
+		return supportedTypes;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object,
+	 * java.lang.Class)
+	 */
+	@Override
+	public Object getAdapter(Object adaptableObject,
+			@SuppressWarnings("rawtypes") Class adapterType) {
+		if (adapterType.equals(IResource.class)
+				&& adaptableObject instanceof ResourceDescriptor) {
+			ResourceDescriptor resourceDesc = (ResourceDescriptor) adaptableObject;
+			return resourceDesc.getFile();
+		}
+		return null;
+	}
 }

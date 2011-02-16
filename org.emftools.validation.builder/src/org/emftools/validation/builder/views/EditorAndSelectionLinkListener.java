@@ -50,7 +50,10 @@ import org.emftools.validation.builder.resourcedesc.ProjectDescriptor;
 import org.emftools.validation.builder.resourcedesc.ResourceDescriptor;
 import org.emftools.validation.builder.resourcedesc.ResourceDescriptorRepository;
 
-//TODO Javadoc
+/**
+ * This listener is responsible for maintaining the validation view with the
+ * workspace current selection and/or editor.
+ */
 final class EditorAndSelectionLinkListener implements ISelectionListener,
 		IPartListener2 {
 
@@ -98,7 +101,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 */
 	private void handleFileSelection(IFile file) {
 		try {
-			// TODO Splitter la méthode
 			ProjectDescriptor project = ResourceDescriptorRepository
 					.getInstance().getCachedProjectDescriptor(
 							file.getProject().getName());
@@ -127,6 +129,8 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 								.getActiveWorkbenchWindow().getActivePage();
 						IEditorReference[] editorReferences = activePage
 								.getEditorReferences();
+						// FIX if severals editors are opened for the same resource, and if one
+						// of the is active, we musn't take the first one but the active
 						for (int i = 0; i < editorReferences.length; i++) {
 							IEditorReference editorReference = editorReferences[i];
 							IEditorInput editorInput = editorReference

@@ -39,35 +39,36 @@ import org.emftools.validation.builder.resourcedesc.ResourcedescPackage;
 import org.emftools.validation.builder.resourcedesc.WorkspaceDescriptor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
-public class ResourcedescFactoryImpl extends EFactoryImpl implements ResourcedescFactory {
+public class ResourcedescFactoryImpl extends EFactoryImpl implements
+		ResourcedescFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static ResourcedescFactory init() {
 		try {
-			ResourcedescFactory theResourcedescFactory = (ResourcedescFactory)EPackage.Registry.INSTANCE.getEFactory("http://org.emftools.validation.builder.resourcedesc/1.0"); 
+			ResourcedescFactory theResourcedescFactory = (ResourcedescFactory) EPackage.Registry.INSTANCE
+					.getEFactory("http://org.emftools.validation.builder.resourcedesc/1.0");
 			if (theResourcedescFactory != null) {
 				return theResourcedescFactory;
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new ResourcedescFactoryImpl();
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ResourcedescFactoryImpl() {
@@ -75,24 +76,28 @@ public class ResourcedescFactoryImpl extends EFactoryImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case ResourcedescPackage.WORKSPACE_DESCRIPTOR: return createWorkspaceDescriptor();
-			case ResourcedescPackage.RESOURCE_DESCRIPTOR: return createResourceDescriptor();
-			case ResourcedescPackage.PROJECT_DESCRIPTOR: return createProjectDescriptor();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		case ResourcedescPackage.WORKSPACE_DESCRIPTOR:
+			return createWorkspaceDescriptor();
+		case ResourcedescPackage.RESOURCE_DESCRIPTOR:
+			return createResourceDescriptor();
+		case ResourcedescPackage.PROJECT_DESCRIPTOR:
+			return createProjectDescriptor();
+		default:
+			throw new IllegalArgumentException("The class '" + eClass.getName()
+					+ "' is not a valid classifier");
 		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public WorkspaceDescriptor createWorkspaceDescriptor() {
@@ -101,8 +106,8 @@ public class ResourcedescFactoryImpl extends EFactoryImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ResourceDescriptor createResourceDescriptor() {
@@ -111,8 +116,8 @@ public class ResourcedescFactoryImpl extends EFactoryImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ProjectDescriptor createProjectDescriptor() {
@@ -121,17 +126,17 @@ public class ResourcedescFactoryImpl extends EFactoryImpl implements Resourcedes
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ResourcedescPackage getResourcedescPackage() {
-		return (ResourcedescPackage)getEPackage();
+		return (ResourcedescPackage) getEPackage();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */
@@ -140,4 +145,4 @@ public class ResourcedescFactoryImpl extends EFactoryImpl implements Resourcedes
 		return ResourcedescPackage.eINSTANCE;
 	}
 
-} //ResourcedescFactoryImpl
+} // ResourcedescFactoryImpl

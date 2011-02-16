@@ -32,33 +32,41 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Resource Descriptor</b></em>'.
- * <!-- end-user-doc -->
- *
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Resource Descriptor</b></em>'. <!-- end-user-doc -->
+ * 
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getUri <em>Uri</em>}</li>
- *   <li>{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferencedResources <em>Referenced Resources</em>}</li>
- *   <li>{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferrerResources <em>Referrer Resources</em>}</li>
- *   <li>{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getProject <em>Project</em>}</li>
+ * <li>
+ * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getUri
+ * <em>Uri</em>}</li>
+ * <li>
+ * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferencedResources
+ * <em>Referenced Resources</em>}</li>
+ * <li>
+ * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferrerResources
+ * <em>Referrer Resources</em>}</li>
+ * <li>
+ * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getProject
+ * <em>Project</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage#getResourceDescriptor()
  * @model
  * @generated
  */
 public interface ResourceDescriptor extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Uri</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Uri</b></em>' attribute. <!--
+	 * begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Uri</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Uri</em>' attribute isn't clear, there really
+	 * should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Uri</em>' attribute.
 	 * @see #setUri(String)
 	 * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage#getResourceDescriptor_Uri()
@@ -68,25 +76,30 @@ public interface ResourceDescriptor extends EObject {
 	String getUri();
 
 	/**
-	 * Sets the value of the '{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getUri <em>Uri</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Uri</em>' attribute.
+	 * Sets the value of the '
+	 * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getUri
+	 * <em>Uri</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Uri</em>' attribute.
 	 * @see #getUri()
 	 * @generated
 	 */
 	void setUri(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Referenced Resources</b></em>' reference list.
-	 * The list contents are of type {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor}.
-	 * It is bidirectional and its opposite is '{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferrerResources <em>Referrer Resources</em>}'.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Referenced Resources</b></em>' reference
+	 * list. The list contents are of type
+	 * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor}.
+	 * It is bidirectional and its opposite is '
+	 * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferrerResources
+	 * <em>Referrer Resources</em>}'. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Referenced Resources</em>' reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Referenced Resources</em>' reference list
+	 * isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Referenced Resources</em>' reference list.
 	 * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage#getResourceDescriptor_ReferencedResources()
 	 * @see org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferrerResources
@@ -96,15 +109,18 @@ public interface ResourceDescriptor extends EObject {
 	EList<ResourceDescriptor> getReferencedResources();
 
 	/**
-	 * Returns the value of the '<em><b>Referrer Resources</b></em>' reference list.
-	 * The list contents are of type {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor}.
-	 * It is bidirectional and its opposite is '{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferencedResources <em>Referenced Resources</em>}'.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Referrer Resources</b></em>' reference
+	 * list. The list contents are of type
+	 * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor}.
+	 * It is bidirectional and its opposite is '
+	 * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferencedResources
+	 * <em>Referenced Resources</em>}'. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Referrer Resources</em>' reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Referrer Resources</em>' reference list isn't
+	 * clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Referrer Resources</em>' reference list.
 	 * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage#getResourceDescriptor_ReferrerResources()
 	 * @see org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getReferencedResources
@@ -115,13 +131,15 @@ public interface ResourceDescriptor extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Project</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link org.emftools.validation.builder.resourcedesc.ProjectDescriptor#getResources <em>Resources</em>}'.
-	 * <!-- begin-user-doc -->
+	 * It is bidirectional and its opposite is '
+	 * {@link org.emftools.validation.builder.resourcedesc.ProjectDescriptor#getResources
+	 * <em>Resources</em>}'. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Project</em>' container reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Project</em>' container reference.
 	 * @see #setProject(ProjectDescriptor)
 	 * @see org.emftools.validation.builder.resourcedesc.ResourcedescPackage#getResourceDescriptor_Project()
@@ -132,26 +150,29 @@ public interface ResourceDescriptor extends EObject {
 	ProjectDescriptor getProject();
 
 	/**
-	 * Sets the value of the '{@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getProject <em>Project</em>}' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Project</em>' container reference.
+	 * Sets the value of the '
+	 * {@link org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getProject
+	 * <em>Project</em>}' container reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Project</em>' container reference.
 	 * @see #getProject()
 	 * @generated
 	 */
 	void setProject(ProjectDescriptor value);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @model required="true"
 	 * @generated
 	 */
 	boolean hasReferences();
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @model required="true"
 	 * @generated
 	 */
@@ -161,6 +182,5 @@ public interface ResourceDescriptor extends EObject {
 	 * @return the workspace file associated to the descriptor.
 	 */
 	IFile getFile();
-	
-	
+
 } // ResourceDescriptor

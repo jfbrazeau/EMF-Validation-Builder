@@ -38,14 +38,18 @@ import org.emftools.validation.builder.resourcedesc.ProjectDescriptor;
 import org.emftools.validation.builder.resourcedesc.ResourceDescriptor;
 import org.emftools.validation.builder.resourcedesc.ResourceDescriptorRepository;
 
-// TODO Javadoc
+/**
+ * The tree content provider of the validation view.
+ * 
+ * @author jbrazeau
+ */
 final class TreeContentProvider implements ITreeContentProvider {
 
 	/**
 	 * Tree input.
 	 */
 	private Object input;
-	
+
 	/** Project comparator */
 	private static Comparator<ProjectDescriptor> projectComparator = new Comparator<ProjectDescriptor>() {
 		@Override
@@ -71,22 +75,47 @@ final class TreeContentProvider implements ITreeContentProvider {
 		}
 	};
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
+	 * .viewers.Viewer, java.lang.Object, java.lang.Object)
+	 */
 	@Override
-	public void inputChanged(Viewer viewer, Object oldInput,
-			Object newInput) {
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		input = newInput;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+	 */
 	@Override
 	public void dispose() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.
+	 * Object)
+	 */
 	@Override
 	public boolean hasChildren(Object element) {
 		Object[] childs = getChildren(element);
 		return childs != null && childs.length > 0;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object
+	 * )
+	 */
 	@Override
 	public Object getParent(Object element) {
 		Object result = null;
@@ -100,11 +129,25 @@ final class TreeContentProvider implements ITreeContentProvider {
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.
+	 * Object)
+	 */
 	@Override
 	public Object[] getElements(Object inputElement) {
 		return getChildren(inputElement);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.
+	 * Object)
+	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		Object[] result = null;
@@ -131,8 +174,8 @@ final class TreeContentProvider implements ITreeContentProvider {
 					.size()];
 			for (int i = 0; i < descriptors.size(); i++) {
 				ResourceDescriptor resource = descriptors.get(i);
-				ResourceReference reference = new ResourceReference(
-						referrer, resource);
+				ResourceReference reference = new ResourceReference(referrer,
+						resource);
 				referencesArray[i] = reference;
 			}
 			Arrays.sort(referencesArray, referenceComparator);

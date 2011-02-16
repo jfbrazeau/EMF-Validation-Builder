@@ -29,25 +29,34 @@ package org.emftools.validation.builder.views;
 
 import org.emftools.validation.builder.resourcedesc.ResourceDescriptor;
 
-// TODO Javadoc
+/**
+ * This bean class is used to distinct ResourceDescriptor nodes in the tree
+ * viewer from reference nodes.
+ * 
+ * @author jbrazeau
+ */
 public class ResourceReference {
 
 	/** Referrer resource */
 	private ResourceDescriptor referrer;
-	
-	/** Referenced resource */ 
+
+	/** Referenced resource */
 	private ResourceDescriptor referenced;
 
 	/**
 	 * Default constructor.
-	 * @param referrer the referrer resource.
-	 * @param referenced the referenced resource.
+	 * 
+	 * @param referrer
+	 *            the referrer resource.
+	 * @param referenced
+	 *            the referenced resource.
 	 */
-	public ResourceReference(ResourceDescriptor referrer, ResourceDescriptor referenced) {
+	public ResourceReference(ResourceDescriptor referrer,
+			ResourceDescriptor referenced) {
 		this.referrer = referrer;
 		this.referenced = referenced;
 	}
-	
+
 	/**
 	 * @return the referrer resource.
 	 */
@@ -61,6 +70,5 @@ public class ResourceReference {
 	public ResourceDescriptor getReferenced() {
 		return referenced;
 	}
-
 
 }

@@ -66,8 +66,8 @@ public class EMFValidationBuilderPreferencePage extends
 		final boolean hasPredefinedFileExtsToProcess = (predefinedFileExtensionsToProcess
 				.size() > 0);
 		if (hasPredefinedFileExtsToProcess) {
-			// This field editor is added only if there are at least one plugin 
-			// that declares a file extension to validate through the 
+			// This field editor is added only if there are at least one plugin
+			// that declares a file extension to validate through the
 			// org.emftools.validation.builder.fileExtensions extension point.
 			addField(new AbstractFileExtensionsFieldEditor(
 					Activator.PREDEFINED_FILE_EXTENSIONS_TO_PROCESS_PREF,
@@ -78,9 +78,11 @@ public class EMFValidationBuilderPreferencePage extends
 					// predefined file extensions
 					return true;
 				}
+
 				protected int getTableHeightHint() {
 					return 100;
 				}
+
 				protected boolean getTableGrabsVerticalSpace() {
 					return false;
 				}
@@ -98,9 +100,11 @@ public class EMFValidationBuilderPreferencePage extends
 				// custom file extensions
 				return false;
 			}
+
 			protected int getTableHeightHint() {
 				return hasPredefinedFileExtsToProcess ? 150 : 250;
 			}
+
 			protected boolean getTableGrabsVerticalSpace() {
 				return true;
 			}
@@ -117,8 +121,8 @@ public class EMFValidationBuilderPreferencePage extends
 	}
 
 	/**
-	 * When the user click on OK, the file extensions list to process
-	 * is updated.
+	 * When the user click on OK, the file extensions list to process is
+	 * updated.
 	 */
 	@Override
 	public boolean performOk() {
@@ -128,8 +132,9 @@ public class EMFValidationBuilderPreferencePage extends
 	}
 
 	/**
-	 * Returns the file extensions list retrieved from the eclipse IDE
-	 * editor list.
+	 * Returns the file extensions list retrieved from the eclipse IDE editor
+	 * list.
+	 * 
 	 * @return the file extensions.
 	 */
 	private List<String> getIDEDefaultFileExtensions() {

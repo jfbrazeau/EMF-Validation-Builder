@@ -138,9 +138,9 @@ public class ResourceDescRepositoryView extends ViewPart {
 		/**
 		 * Test actions
 		 */
-		createRefreshAction();
 		createCollapseAllAction();
 		createLinkWithEditorAndSelectionAction();
+		createRefreshAction();
 	}
 
 	/**

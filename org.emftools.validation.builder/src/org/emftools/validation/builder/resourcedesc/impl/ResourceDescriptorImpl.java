@@ -454,7 +454,6 @@ public class ResourceDescriptorImpl extends EObjectImpl implements
 	 * @see
 	 * org.emftools.validation.builder.resourcedesc.ResourceDescriptor#getFile()
 	 */
-	@Override
 	public IFile getFile() {
 		String resourcePath = URI.createURI(getUri()).toPlatformString(true);
 		return ResourcesPlugin.getWorkspace().getRoot()

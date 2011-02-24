@@ -83,7 +83,6 @@ final class ResourceDescriptorsModelAdapter extends AdapterImpl {
 			}
 			final Object theNotifier = notifier;
 			Display.getDefault().asyncExec(new Runnable() {
-				@Override
 				public void run() {
 					viewer.refresh(theNotifier);
 				}

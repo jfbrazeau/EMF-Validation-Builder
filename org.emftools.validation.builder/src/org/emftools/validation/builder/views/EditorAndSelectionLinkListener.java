@@ -76,7 +76,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.
 	 * IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
 	 */
-	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		if (selection instanceof TreeSelection) {
 			TreeSelection treeSelection = (TreeSelection) selection;
@@ -171,7 +170,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
-	@Override
 	public void partActivated(IWorkbenchPartReference partRef) {
 		if (partRef instanceof IEditorReference) {
 			IEditorReference editorReference = (IEditorReference) partRef;
@@ -197,7 +195,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
-	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
 	}
 
@@ -207,7 +204,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
-	@Override
 	public void partClosed(IWorkbenchPartReference partRef) {
 	}
 
@@ -217,7 +213,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
-	@Override
 	public void partDeactivated(IWorkbenchPartReference partRef) {
 	}
 
@@ -227,7 +222,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
-	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
 	}
 
@@ -237,7 +231,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
-	@Override
 	public void partHidden(IWorkbenchPartReference partRef) {
 	}
 
@@ -247,7 +240,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
-	@Override
 	public void partVisible(IWorkbenchPartReference partRef) {
 	}
 
@@ -257,7 +249,6 @@ final class EditorAndSelectionLinkListener implements ISelectionListener,
 	 * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
-	@Override
 	public void partInputChanged(IWorkbenchPartReference partRef) {
 	}
 

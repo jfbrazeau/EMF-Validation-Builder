@@ -110,7 +110,6 @@ public class ResourceDescRepositoryView extends ViewPart {
 				.getInstance();
 		viewer.setInput(repository);
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				handleDoubleClickEvent();
 			}
@@ -237,7 +236,6 @@ public class ResourceDescRepositoryView extends ViewPart {
 				final IFile iFile = resource.getFile();
 				PlatformUI.getWorkbench().getDisplay()
 						.asyncExec(new Runnable() {
-							@Override
 							public void run() {
 								try {
 									IWorkbenchPage page = PlatformUI
@@ -312,7 +310,6 @@ final class ResourceDescriptorAdapterFactory implements IAdapterFactory {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
 	 */
-	@Override
 	public Class<?>[] getAdapterList() {
 		return supportedTypes;
 	}
@@ -324,7 +321,6 @@ final class ResourceDescriptorAdapterFactory implements IAdapterFactory {
 	 * org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object,
 	 * java.lang.Class)
 	 */
-	@Override
 	public Object getAdapter(Object adaptableObject,
 			@SuppressWarnings("rawtypes") Class adapterType) {
 		if (adapterType.equals(IResource.class)

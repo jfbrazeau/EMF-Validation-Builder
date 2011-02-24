@@ -52,7 +52,6 @@ final class TreeContentProvider implements ITreeContentProvider {
 
 	/** Project comparator */
 	private static Comparator<ProjectDescriptor> projectComparator = new Comparator<ProjectDescriptor>() {
-		@Override
 		public int compare(ProjectDescriptor p1, ProjectDescriptor p2) {
 			return p1.getName().compareTo(p2.getName());
 		}
@@ -60,7 +59,6 @@ final class TreeContentProvider implements ITreeContentProvider {
 
 	/** Resource comparator */
 	private static Comparator<ResourceDescriptor> resourceComparator = new Comparator<ResourceDescriptor>() {
-		@Override
 		public int compare(ResourceDescriptor r1, ResourceDescriptor r2) {
 			return URI.decode(r1.getUri()).toLowerCase()
 					.compareTo(URI.decode(r2.getUri()).toLowerCase());
@@ -82,7 +80,6 @@ final class TreeContentProvider implements ITreeContentProvider {
 	 * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
 	 * .viewers.Viewer, java.lang.Object, java.lang.Object)
 	 */
-	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		input = newInput;
 	}
@@ -92,7 +89,6 @@ final class TreeContentProvider implements ITreeContentProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
-	@Override
 	public void dispose() {
 	}
 
@@ -103,7 +99,6 @@ final class TreeContentProvider implements ITreeContentProvider {
 	 * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.
 	 * Object)
 	 */
-	@Override
 	public boolean hasChildren(Object element) {
 		Object[] childs = getChildren(element);
 		return childs != null && childs.length > 0;
@@ -116,7 +111,6 @@ final class TreeContentProvider implements ITreeContentProvider {
 	 * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object
 	 * )
 	 */
-	@Override
 	public Object getParent(Object element) {
 		Object result = null;
 		if (element instanceof ProjectDescriptor) {
@@ -136,7 +130,6 @@ final class TreeContentProvider implements ITreeContentProvider {
 	 * org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.
 	 * Object)
 	 */
-	@Override
 	public Object[] getElements(Object inputElement) {
 		return getChildren(inputElement);
 	}
@@ -148,7 +141,6 @@ final class TreeContentProvider implements ITreeContentProvider {
 	 * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.
 	 * Object)
 	 */
-	@Override
 	public Object[] getChildren(Object parentElement) {
 		Object[] result = null;
 		if (parentElement instanceof ResourceDescriptorRepository) {
